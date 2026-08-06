@@ -14,3 +14,42 @@ if (menuBtn && dropdownMenu) {
     }
   });
 }
+
+const track = document.querySelector('.carousel-track');
+const dotsContainer = document.querySelector('.carousel-dots');
+let currentSlide = 0;
+let autoPlayInterval;
+
+function goToSlide(index) {
+  const totalSlides = track ? track.children.length : 0;
+  if (totalSlides === 0) return;
+  currentSlide = (index + totalSlides) % totalSlides;
+  track.style.transform = `translateX(-${currentSlide * 100}%)`;
+  updateDots();
+}
+
+function updateDots() {
+  [...dotsContainer.children].forEach((dot, i) => {
+    dot.classList.toggle('active', i === currentSlide);
+  });
+}
+
+function restartAutoPlay() {
+  clearInterval(autoPlayInterval);
+  autoPlayInterval = setInterval(() => goToSlide(currentSlide + 1), 2000);
+}
+
+if (track && dotsContainer) {
+  [...track.children].forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.classList.add('carousel-dot');
+    dot.setAttribute('aria-label', `Ir a la imagen ${i + 1}`);
+    dot.addEventListener('click', () => {
+      goToSlide(i);
+      restartAutoPlay();
+    });
+    dotsContainer.appendChild(dot);
+  });
+  updateDots();
+  restartAutoPlay();
+}
