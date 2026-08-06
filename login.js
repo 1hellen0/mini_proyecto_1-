@@ -33,6 +33,24 @@
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
   }
 
+  // ---------- Local storage ----------
+  const USERS_KEY = 'quantum_users';
+
+  function getUsers(){
+    try {
+      return JSON.parse(localStorage.getItem(USERS_KEY)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+  function saveUsers(users){
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  }
+  function findUser(email){
+    const users = getUsers();
+    return users.find(u => u.email === email.toLowerCase());
+  }
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     clearError();
@@ -56,10 +74,30 @@
       return;
     }
 
-    // Demo only — no real authentication is performed.
+    const user = findUser(email);
+    if (!user){
+      emailInput.classList.add('invalid');
+      showError('No account found for this email. Request access to create one.');
+      emailInput.focus();
+      return;
+    }
+    if (user.password !== password){
+      passwordInput.classList.add('invalid');
+      showError('Incorrect password. Please try again.');
+      passwordInput.focus();
+      return;
+    }
+
+    const remember = document.getElementById('remember').checked;
+    localStorage.setItem('quantum_session', JSON.stringify({
+      email: user.email,
+      name: user.name,
+      expires: remember ? Date.now() + (30 * 24 * 60 * 60 * 1000) : null
+    }));
+
     showError('');
     errorMsg.hidden = true;
-    alert('Demo form — no backend connected. Inputs passed validation.');
+    alert('Welcome back, ' + user.name + '!');
   });
 
   googleBtn.addEventListener('click', () => {
@@ -73,12 +111,24 @@
   const toggleLogin = document.getElementById('toggle-login');
   const signupForm = document.getElementById('signup-form');
   const signupError = document.getElementById('signup-error');
+  const signupEmail = document.getElementById('signup-email');
 
   function showSignup(show){
     formWrap.hidden = show;
     signupWrap.hidden = !show;
     signupError.hidden = true;
   }
+
+  signupEmail.addEventListener('blur', () => {
+    const email = signupEmail.value.trim();
+    if (isValidEmail(email) && findUser(email)){
+      signupError.textContent = 'An account with this email already exists.';
+      signupError.hidden = false;
+    } else {
+      signupError.hidden = true;
+      signupError.textContent = '';
+    }
+  });
 
   toggleSignup.addEventListener('click', (e) => {
     e.preventDefault();
@@ -121,7 +171,18 @@
       return;
     }
 
-    alert('Demo form — account created for ' + email);
+    const users = getUsers();
+    const emailKey = email.toLowerCase();
+    if (users.some(u => u.email === emailKey)){
+      signupError.textContent = 'An account with this email already exists.';
+      signupError.hidden = false;
+      return;
+    }
+
+    users.push({ name, email: emailKey, password });
+    saveUsers(users);
+
+    alert('Account created for ' + email);
     showSignup(false);
     emailInput.value = email;
     emailInput.focus();
