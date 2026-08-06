@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantum + | Panel Administrativo</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-area">
+        <a class="logo" href="index.html" aria-label="Inicio Quantum +">
+          <span class="logo-mark">Q+</span>
+          <span class="logo-name">Quantum +</span>
+        </a>
+
+        <div class="menu-wrapper">
+          <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menu administrativo" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          <nav class="dropdown-menu" id="dropdownMenu" aria-label="Menu administrativo">
+            <a href="clientes.html" target="_blank" rel="noopener">Administracion de clientes</a>
+            <a href="productos.html" target="_blank" rel="noopener">Administracion de productos</a>
+            <a href="proveedores.html" target="_blank" rel="noopener">Administracion de proveedores</a>
+          </nav>
+        </div>
+      </div>
+
+      <section class="user-info" aria-label="Informacion del usuario">
+        <div>
+          <p class="user-role">Administrador general</p>
+          <h2>Laura Mendez</h2>
+        </div>
+        <span class="user-avatar">LM</span>
+      </section>
+    </header>
+
+    <main class="dashboard">
+      <section class="hero-panel">
+        <div>
+          <p class="eyebrow">Centro de operaciones</p>
+          <h1>Dashboard administrativo</h1>
+          <p class="hero-copy">
+            Controla clientes, productos, proveedores y tareas clave desde un entorno conectado, claro y de alta tecnologia.
+          </p>
+        </div>
+        <div class="system-status" aria-label="Estado del sistema">
+          <span class="pulse"></span>
+          <strong>Sistema activo</strong>
+          <small>Sin incidencias criticas</small>
+        </div>
+      </section>
+
+      <section class="summary-grid" aria-label="Tarjetas con informacion resumida">
+        <article class="summary-card">
+          <span class="card-icon">01</span>
+          <p>Clientes activos</p>
+          <h3>1,284</h3>
+          <small>+12% este mes</small>
+        </article>
+        <article class="summary-card">
+          <span class="card-icon">02</span>
+          <p>Productos registrados</p>
+          <h3>836</h3>
+          <small>42 nuevos ingresos</small>
+        </article>
+        <article class="summary-card">
+          <span class="card-icon">03</span>
+          <p>Proveedores</p>
+          <h3>96</h3>
+          <small>18 pendientes de revision</small>
+        </article>
+        <article class="summary-card">
+          <span class="card-icon">04</span>
+          <p>Ordenes procesadas</p>
+          <h3>2,451</h3>
+          <small>Rendimiento estable</small>
+        </article>
+      </section>
+
+      <section class="work-area" aria-label="Area principal de trabajo">
+        <div class="work-header">
+          <div>
+            <p class="eyebrow">Flujo principal</p>
+            <h2>Area principal de trabajo</h2>
+          </div>
+          <button type="button" class="primary-action">Nueva tarea</button>
+        </div>
+
+        <div class="task-layout">
+          <article class="operations-panel">
+            <h3>Tareas prioritarias</h3>
+            <ul class="task-list">
+              <li>
+                <span></span>
+                <div>
+                  <strong>Validar proveedores nuevos</strong>
+                  <p>Revisar documentacion y estado comercial.</p>
+                </div>
+              </li>
+              <li>
+                <span></span>
+                <div>
+                  <strong>Actualizar inventario</strong>
+                  <p>Sincronizar productos con disponibilidad real.</p>
+                </div>
+              </li>
+              <li>
+                <span></span>
+                <div>
+                  <strong>Seguimiento a clientes clave</strong>
+                  <p>Consultar historiales y solicitudes abiertas.</p>
+                </div>
+              </li>
+            </ul>
+          </article>
+
+          <article class="data-panel">
+            <h3>Rendimiento operativo</h3>
+            <div class="metric-row">
+              <span>Clientes</span>
+              <div class="meter"><span style="width: 82%"></span></div>
+              <strong>82%</strong>
+            </div>
+            <div class="metric-row">
+              <span>Productos</span>
+              <div class="meter"><span style="width: 71%"></span></div>
+              <strong>71%</strong>
+            </div>
+            <div class="metric-row">
+              <span>Proveedores</span>
+              <div class="meter"><span style="width: 64%"></span></div>
+              <strong>64%</strong>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="logic.js"></script>
+</body>
+</html>
