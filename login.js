@@ -66,4 +66,65 @@
     alert('Demo form — connect this button to your OAuth flow.');
   });
 
+  // ---------- Toggle login / signup ----------
+  const signupWrap = document.getElementById('signup-wrap');
+  const formWrap = document.querySelector('.form-wrap');
+  const toggleSignup = document.getElementById('toggle-signup');
+  const toggleLogin = document.getElementById('toggle-login');
+  const signupForm = document.getElementById('signup-form');
+  const signupError = document.getElementById('signup-error');
+
+  function showSignup(show){
+    formWrap.hidden = show;
+    signupWrap.hidden = !show;
+    signupError.hidden = true;
+  }
+
+  toggleSignup.addEventListener('click', (e) => {
+    e.preventDefault();
+    showSignup(true);
+  });
+
+  toggleLogin.addEventListener('click', (e) => {
+    e.preventDefault();
+    showSignup(false);
+  });
+
+  signupForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    signupError.hidden = true;
+    signupError.textContent = '';
+
+    const name = document.getElementById('signup-name').value.trim();
+    const email = document.getElementById('signup-email').value.trim();
+    const password = document.getElementById('signup-password').value;
+    const confirm = document.getElementById('signup-confirm').value;
+
+    if (!name){
+      signupError.textContent = 'Enter your full name to continue.';
+      signupError.hidden = false;
+      return;
+    }
+    if (!isValidEmail(email)){
+      signupError.textContent = 'Enter a valid email address to continue.';
+      signupError.hidden = false;
+      return;
+    }
+    if (password.length < 6){
+      signupError.textContent = 'Password must be at least 6 characters.';
+      signupError.hidden = false;
+      return;
+    }
+    if (password !== confirm){
+      signupError.textContent = 'Passwords do not match.';
+      signupError.hidden = false;
+      return;
+    }
+
+    alert('Demo form — account created for ' + email);
+    showSignup(false);
+    emailInput.value = email;
+    emailInput.focus();
+  });
+
 })();
