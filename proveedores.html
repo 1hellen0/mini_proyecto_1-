@@ -6,30 +6,69 @@
   <title>Quantum + | Proveedores</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-  <main class="module-page">
-    <a class="logo" href="index.html">
-      <span class="logo-mark">Q+</span>
-      <span class="logo-name">Quantum +</span>
-    </a>
-    <section class="work-area module-view">
-      <p class="eyebrow">Modulo administrativo</p>
-      <h1>Administracion de proveedores</h1>
-      <div class="module-grid">
-        <article class="summary-card">
-          <span class="card-icon">PV</span>
-          <p>Proveedores activos</p>
-          <h3>96</h3>
-          <small>Red operacional estable</small>
-        </article>
-        <article class="summary-card">
-          <span class="card-icon">RV</span>
-          <p>Revisiones pendientes</p>
-          <h3>18</h3>
-          <small>Documentacion por validar</small>
-        </article>
+<body data-module="proveedores">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-area">
+        <a class="logo" href="index.html" aria-label="Inicio Quantum +">
+          <span class="logo-mark">Q+</span>
+          <span class="logo-name">Quantum +</span>
+        </a>
+
+        <nav class="sidebar-menu" aria-label="Menú administrativo">
+          <a href="clientes.html">Administración de clientes</a>
+          <a href="productos.html">Administración de productos</a>
+          <a href="proveedores.html">Administración de proveedores</a>
+        </nav>
       </div>
-    </section>
-  </main>
+    </aside>
+
+    <div class="content-shell">
+      <header class="topbar">
+        <section class="user-info" aria-label="Información del usuario">
+          <div>
+            <p class="user-role">Vista Administrativa</p>
+            <h2>Bryan Gomez</h2>
+          </div>
+          <span class="user-avatar">BG</span>
+        </section>
+      </header>
+
+      <main class="dashboard">
+        <section class="work-area module-view">
+          <p class="eyebrow">Módulo administrativo</p>
+          <h1>Administración de proveedores</h1>
+          <div class="module-grid" id="summaryGrid" aria-label="Resumen de proveedores"></div>
+        </section>
+
+        <section class="work-area">
+          <div class="work-header">
+            <div>
+              <p class="eyebrow">Registro</p>
+              <h2 id="formTitle">Nuevo proveedor</h2>
+            </div>
+          </div>
+          <form id="recordForm" class="record-form" novalidate></form>
+        </section>
+
+        <section class="work-area">
+          <div class="work-header">
+            <div>
+              <p class="eyebrow">Listado</p>
+              <h2>Proveedores registrados</h2>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead id="tableHead"></thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
