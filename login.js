@@ -3,21 +3,36 @@
   const form = document.getElementById('login-form');
   const emailInput = document.getElementById('email');
   const passwordInput = document.getElementById('password');
-  const toggleBtn = document.getElementById('toggle-password');
-  const eyeOpen = toggleBtn.querySelector('.eye-open');
-  const eyeClosed = toggleBtn.querySelector('.eye-closed');
   const errorMsg = document.getElementById('form-error');
   const googleBtn = document.getElementById('google-btn');
 
   // ---------- Show / hide password ----------
-  toggleBtn.addEventListener('click', () => {
-    const showing = passwordInput.type === 'text';
-    passwordInput.type = showing ? 'password' : 'text';
-    toggleBtn.setAttribute('aria-pressed', String(!showing));
-    toggleBtn.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
-    eyeOpen.hidden = !showing ? false : true;
-    eyeClosed.hidden = !showing ? true : false;
-  });
+  function setupPasswordToggle(button, input){
+    if (!button || !input) return;
+    const eyeOpen = button.querySelector('.eye-open');
+    const eyeClosed = button.querySelector('.eye-closed');
+    button.addEventListener('click', () => {
+      const showing = input.type === 'text';
+      input.type = showing ? 'password' : 'text';
+      button.setAttribute('aria-pressed', String(!showing));
+      button.setAttribute('aria-label', showing ? 'Mostrar contraseña' : 'Ocultar contraseña');
+      eyeOpen.hidden = !showing ? false : true;
+      eyeClosed.hidden = !showing ? true : false;
+    });
+  }
+
+  setupPasswordToggle(
+    document.getElementById('toggle-password'),
+    document.getElementById('password')
+  );
+  setupPasswordToggle(
+    document.getElementById('toggle-signup-password'),
+    document.getElementById('signup-password')
+  );
+  setupPasswordToggle(
+    document.getElementById('toggle-signup-confirm'),
+    document.getElementById('signup-confirm')
+  );
 
   // ---------- Basic front-end validation ----------
   function showError(message){
@@ -62,14 +77,14 @@
 
     if (!email || !isValidEmail(email)){
       emailInput.classList.add('invalid');
-      showError('Enter a valid email address to continue.');
+      showError('Introduce un correo electrónico válido para continuar.');
       emailInput.focus();
       return;
     }
 
     if (!password || password.length < 6){
       passwordInput.classList.add('invalid');
-      showError('Password must be at least 6 characters.');
+      showError('La contraseña debe tener al menos 6 caracteres.');
       passwordInput.focus();
       return;
     }
@@ -77,13 +92,13 @@
     const user = findUser(email);
     if (!user){
       emailInput.classList.add('invalid');
-      showError('No account found for this email. Request access to create one.');
+      showError('No se encontró ninguna cuenta con este correo. Solicita acceso para crear una.');
       emailInput.focus();
       return;
     }
     if (user.password !== password){
       passwordInput.classList.add('invalid');
-      showError('Incorrect password. Please try again.');
+      showError('Contraseña incorrecta. Inténtalo de nuevo.');
       passwordInput.focus();
       return;
     }
@@ -97,11 +112,11 @@
 
     showError('');
     errorMsg.hidden = true;
-    alert('Welcome back, ' + user.name + '!');
+    alert('Bienvenido de nuevo, ' + user.name + '!');
   });
 
   googleBtn.addEventListener('click', () => {
-    alert('Demo form — connect this button to your OAuth flow.');
+    alert('Formulario de demostración: conecta este botón a tu flujo OAuth.');
   });
 
   // ---------- Toggle login / signup ----------
@@ -122,7 +137,7 @@
   signupEmail.addEventListener('blur', () => {
     const email = signupEmail.value.trim();
     if (isValidEmail(email) && findUser(email)){
-      signupError.textContent = 'An account with this email already exists.';
+      signupError.textContent = 'Ya existe una cuenta con este correo electrónico.';
       signupError.hidden = false;
     } else {
       signupError.hidden = true;
@@ -151,22 +166,22 @@
     const confirm = document.getElementById('signup-confirm').value;
 
     if (!name){
-      signupError.textContent = 'Enter your full name to continue.';
+      signupError.textContent = 'Introduce tu nombre completo para continuar.';
       signupError.hidden = false;
       return;
     }
     if (!isValidEmail(email)){
-      signupError.textContent = 'Enter a valid email address to continue.';
+      signupError.textContent = 'Introduce un correo electrónico válido para continuar.';
       signupError.hidden = false;
       return;
     }
     if (password.length < 6){
-      signupError.textContent = 'Password must be at least 6 characters.';
+      signupError.textContent = 'La contraseña debe tener al menos 6 caracteres.';
       signupError.hidden = false;
       return;
     }
     if (password !== confirm){
-      signupError.textContent = 'Passwords do not match.';
+      signupError.textContent = 'Las contraseñas no coinciden.';
       signupError.hidden = false;
       return;
     }
@@ -174,7 +189,7 @@
     const users = getUsers();
     const emailKey = email.toLowerCase();
     if (users.some(u => u.email === emailKey)){
-      signupError.textContent = 'An account with this email already exists.';
+      signupError.textContent = 'Ya existe una cuenta con este correo electrónico.';
       signupError.hidden = false;
       return;
     }
@@ -182,7 +197,7 @@
     users.push({ name, email: emailKey, password });
     saveUsers(users);
 
-    alert('Account created for ' + email);
+    alert('Cuenta creada para ' + email);
     showSignup(false);
     emailInput.value = email;
     emailInput.focus();
