@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantum + | Clientes</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-module="clientes">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-area">
+        <a class="logo" href="admin.html" aria-label="Inicio Quantum +">
+          <span class="logo-mark">Q+</span>
+          <span class="logo-name">Quantum +</span>
+        </a>
+
+        <nav class="sidebar-menu" aria-label="Menú administrativo">
+          <a href="clientes.html">Administración de clientes</a>
+          <a href="productos.html">Administración de productos</a>
+          <a href="proveedores.html">Administración de proveedores</a>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="content-shell">
+      <header class="topbar">
+        <section class="user-info" aria-label="Información del usuario">
+          <div>
+            <p class="user-role">Vista Administrativa</p>
+            <h2>Bryan Gomez</h2>
+          </div>
+          <span class="user-avatar">BG</span>
+        </section>
+      </header>
+
+      <main class="dashboard">
+        <section class="work-area module-view">
+          <p class="eyebrow">Módulo administrativo</p>
+          <h1>Administración de clientes</h1>
+          <div class="module-grid" id="summaryGrid" aria-label="Resumen de clientes"></div>
+        </section>
+
+        <section class="work-area">
+          <div class="work-header">
+            <div>
+              <p class="eyebrow">Registro</p>
+              <h2 id="formTitle">Nuevo cliente</h2>
+            </div>
+          </div>
+          <form id="recordForm" class="record-form" novalidate></form>
+        </section>
+
+        <section class="work-area">
+          <div class="work-header">
+            <div>
+              <p class="eyebrow">Listado</p>
+              <h2>Clientes registrados</h2>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead id="tableHead"></thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
