@@ -179,7 +179,7 @@ html, body{
   border: none;
   padding: 4px;
   cursor: pointer;
-  color: #FFF;
+  color: #6B7080;
   display: flex;
 }
 .toggle-visibility:hover{ color: var(--text-dim); }
