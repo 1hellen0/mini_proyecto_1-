@@ -81,6 +81,26 @@ body {
 .menu-btn {
   background: var(--accent-soft);
   color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+}
+
+.menu-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menu-icon span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
 }
 
 .login-btn:hover,
@@ -113,6 +133,10 @@ body {
   padding: 12px 16px;
   text-decoration: none;
   color: var(--text);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
 }
 
 .dropdown-menu a:hover {
