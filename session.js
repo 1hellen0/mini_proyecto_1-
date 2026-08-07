@@ -23,13 +23,23 @@
 
   var session = getSession();
 
+  if (!session) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  window.QUANTUM_ROLE = session.role || 'operador';
+  window.QUANTUM_USER = session;
+
   var nameEl = document.getElementById('userName');
   var avatarBtn = document.getElementById('userAvatar');
   var menu = document.getElementById('userMenu');
   var logoutBtn = document.getElementById('logoutBtn');
+  var roleEl = document.querySelector('.user-role');
 
-  if (nameEl) nameEl.textContent = session ? session.name : 'Invitado';
-  if (avatarBtn) avatarBtn.textContent = session ? initials(session.name) : '--';
+  if (nameEl) nameEl.textContent = session.name;
+  if (avatarBtn) avatarBtn.textContent = initials(session.name);
+  if (roleEl) roleEl.textContent = window.QUANTUM_ROLE === 'admin' ? 'Administrador' : 'Operador';
 
   if (avatarBtn && menu) {
     avatarBtn.addEventListener('click', function (e) {

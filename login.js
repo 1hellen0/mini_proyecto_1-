@@ -59,7 +59,11 @@
     }
   }
   function saveUsers(users){
-    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    try {
+      localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    } catch (e) {
+      console.warn('No se pudo guardar en localStorage', e);
+    }
   }
   function findUser(email){
     const users = getUsers();
@@ -68,9 +72,27 @@
 
   function seedDefaultUser(){
     const users = getUsers();
-    if (users.length) return;
-    users.push({ name: 'Admin Demo', email: 'admin@enterprise.io', password: 'admin123' });
-    saveUsers(users);
+    users.forEach(u => {
+      if (!u.role) u.role = 'operador';
+    });
+    const seed = [
+      { name: 'Admin Demo', email: 'admin@enterprise.io', password: 'admin123', role: 'admin' },
+      { name: 'Usuario', email: 'tu@correo.com', password: 'clave123', role: 'admin' },
+      { name: 'Hellen', email: 'hellen@correo.com', password: 'clave123', role: 'operador' },
+      { name: 'Luis Mendez', email: 'luis.mendez@correo.com', password: 'clave123', role: 'admin' }
+    ];
+    let changed = false;
+    seed.forEach(u => {
+      const existing = users.find(x => x.email === u.email);
+      if (!existing){
+        users.push(u);
+        changed = true;
+      } else if (existing.role !== u.role){
+        existing.role = u.role;
+        changed = true;
+      }
+    });
+    if (changed) saveUsers(users);
   }
   seedDefaultUser();
 
@@ -97,7 +119,11 @@
       return;
     }
 
-    const user = findUser(email);
+    let user = findUser(email);
+    if (!user){
+      seedDefaultUser();
+      user = findUser(email);
+    }
     if (!user){
       emailInput.classList.add('invalid');
       showError('No se encontró ninguna cuenta con este correo. Solicita acceso para crear una.');
@@ -105,7 +131,7 @@
       return;
     }
     if (user.password !== password){
-      passwordInput.classList.add('invalid');
+      emailInput.classList.add('invalid');
       showError('Contraseña incorrecta. Inténtalo de nuevo.');
       passwordInput.focus();
       return;
@@ -115,6 +141,7 @@
     localStorage.setItem('quantum_session', JSON.stringify({
       email: user.email,
       name: user.name,
+      role: user.role || 'operador',
       expires: remember ? Date.now() + (30 * 24 * 60 * 60 * 1000) : null
     }));
 
@@ -203,7 +230,7 @@
       return;
     }
 
-    users.push({ name, email: emailKey, password });
+    users.push({ name, email: emailKey, password, role: 'operador' });
     saveUsers(users);
 
     alert('Cuenta creada para ' + email);
