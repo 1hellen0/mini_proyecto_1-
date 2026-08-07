@@ -147,6 +147,10 @@ body {
   text-transform: uppercase;
 }
 
+.user-dropdown {
+  position: relative;
+}
+
 .user-avatar {
   display: grid;
   place-items: center;
@@ -156,6 +160,43 @@ body {
   color: var(--ink);
   background: var(--lime);
   font-weight: 800;
+  border: none;
+  cursor: pointer;
+}
+
+.user-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  z-index: 1000;
+  display: none;
+  flex-direction: column;
+  min-width: 170px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+}
+
+.user-menu.show {
+  display: flex;
+}
+
+.user-menu a {
+  display: block;
+  padding: 12px 16px;
+  text-align: center;
+  color: var(--blue-deep);
+  background: rgba(31, 186, 192, 0.15);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.user-menu a:hover {
+  background: linear-gradient(135deg, var(--blue-deep), var(--cyan));
+  color: #fff;
 }
 
 .dashboard {

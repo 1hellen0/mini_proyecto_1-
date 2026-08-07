@@ -272,9 +272,9 @@ body.dark footer {
 }
 
 .carousel-track img {
-  width: 100%;
+  width: auto;
+  height: 400px;
   flex-shrink: 0;
-  height: 420px;
   object-fit: cover;
   display: block;
 }
