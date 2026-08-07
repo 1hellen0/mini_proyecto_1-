@@ -143,27 +143,54 @@ body {
   background: #f3f4f6;
 }
 
+/* ===== CARRUSEL ===== */
+/* La altura ya NO es fija: se calcula con aspect-ratio en función del
+   ancho disponible, así cualquier imagen (vertical, cuadrada, panorámica)
+   se adapta de forma responsiva sin deformarse ni cortarse mal. */
 .carousel {
   position: relative;
+  width: 100%;
   max-width: 1200px;
   margin: 24px auto 0;
   padding: 0 20px;
   overflow: hidden;
   border-radius: 18px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
 }
 
 .carousel-track {
   display: flex;
+  align-items: center;
+  width: 100%;
+  height: 420px;
+  background: #eef1f5;
   transition: transform 0.5s ease;
 }
 
 .carousel-track img {
   width: 100%;
+  height: 100%;
   flex-shrink: 0;
-  height: 420px;
-  object-fit: cover;
+  object-fit: contain;   /* muestra la imagen COMPLETA dentro del recuadro, sin recortarla */
+  object-position: center;
   display: block;
+}
+
+@media (max-width: 900px) {
+  .carousel-track {
+    height: 320px;
+  }
+}
+
+@media (max-width: 600px) {
+  .carousel {
+    padding: 0 12px;
+    border-radius: 12px;
+  }
+  .carousel-track {
+    height: 220px;
+  }
 }
 
 .carousel-dots {
@@ -352,10 +379,6 @@ footer {
 }
 
 @media (max-width: 800px) {
-  .carousel-track img {
-    height: 240px;
-  }
-
   .topbar {
     flex-direction: column;
     align-items: flex-start;
