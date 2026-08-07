@@ -66,6 +66,14 @@
     return users.find(u => u.email === email.toLowerCase());
   }
 
+  function seedDefaultUser(){
+    const users = getUsers();
+    if (users.length) return;
+    users.push({ name: 'Admin Demo', email: 'admin@enterprise.io', password: 'admin123' });
+    saveUsers(users);
+  }
+  seedDefaultUser();
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     clearError();
@@ -113,6 +121,7 @@
     showError('');
     errorMsg.hidden = true;
     alert('Bienvenido de nuevo, ' + user.name + '!');
+    window.location.href = 'admin.html';
   });
 
   googleBtn.addEventListener('click', () => {

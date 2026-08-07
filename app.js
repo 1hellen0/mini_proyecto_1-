@@ -326,6 +326,99 @@
     renderTable();
   }
 
+  function normalizeHeader(value) {
+    return String(value).toLowerCase()
+      .replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i')
+      .replace(/ó/g, 'o').replace(/ú/g, 'u').replace(/ñ/g, 'n')
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ').trim();
+  }
+
+  function mapExcelRow(row) {
+    var byHeader = {};
+    config.fields.forEach(function (f) {
+      byHeader[normalizeHeader(f.key)] = f.key;
+      byHeader[normalizeHeader(f.label)] = f.key;
+    });
+
+    var mapped = {};
+    Object.keys(row).forEach(function (header) {
+      var key = byHeader[normalizeHeader(header)];
+      if (key && mapped[key] === undefined) mapped[key] = row[header];
+    });
+    return mapped;
+  }
+
+  function importFromFile(file) {
+    if (typeof XLSX === 'undefined') {
+      toast('No se pudo cargar el lector de Excel');
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      try {
+        var wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+        var sheet = wb.Sheets[wb.SheetNames[0]];
+        var rows = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+        if (!rows.length) {
+          toast('El archivo no contiene datos');
+          return;
+        }
+
+        var added = 0;
+        var skipped = 0;
+        rows.forEach(function (row) {
+          var mapped = mapExcelRow(row);
+          var data = {};
+          var valid = true;
+          config.fields.forEach(function (f) {
+            var value = mapped[f.key];
+            if (f.required && (value === undefined || value === null || String(value).trim() === '')) {
+              valid = false;
+              return;
+            }
+            data[f.key] = f.type === 'number'
+              ? parseFloat(String(value).replace(/[^0-9.\-]/g, '')) || 0
+              : String(value).trim();
+          });
+          if (!valid) {
+            skipped++;
+            return;
+          }
+          data.id = uid();
+          records.push(data);
+          added++;
+        });
+
+        if (added) {
+          save();
+          renderAll();
+        }
+        toast(added + ' ' + config.singular + (added === 1 ? ' importado' : 's importados') + (skipped ? ' · ' + skipped + ' omitidos' : ''));
+      } catch (err) {
+        toast('No se pudo leer el archivo');
+      }
+    };
+    reader.onerror = function () {
+      toast('No se pudo leer el archivo');
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  var uploadBtn = document.getElementById('uploadBtn');
+  var uploadInput = document.getElementById('uploadInput');
+  if (uploadBtn && uploadInput) {
+    uploadBtn.addEventListener('click', function () {
+      uploadInput.click();
+    });
+    uploadInput.addEventListener('change', function () {
+      var file = uploadInput.files && uploadInput.files[0];
+      if (!file) return;
+      importFromFile(file);
+      uploadInput.value = '';
+    });
+  }
+
   function startEdit(id) {
     var rec = records.filter(function (r) { return Number(r.id) === Number(id); })[0];
     if (!rec) return;

@@ -482,6 +482,29 @@ body {
   display: none;
 }
 
+.btn-upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--blue-deep);
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-upload svg {
+  width: 16px;
+  height: 16px;
+}
+
+.btn-upload:hover {
+  background: rgba(31, 186, 192, 0.1);
+}
+
 .table-wrap {
   overflow-x: auto;
   border: 1px solid var(--line);

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quantum + | Clientes</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body data-module="clientes">
   <div class="app-shell">
@@ -47,6 +48,15 @@
               <p class="eyebrow">Registro</p>
               <h2 id="formTitle">Nuevo cliente</h2>
             </div>
+            <button type="button" id="uploadBtn" class="btn-upload">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              Subir archivo
+            </button>
+            <input type="file" id="uploadInput" accept=".xlsx,.xls,.csv" hidden>
           </div>
           <form id="recordForm" class="record-form" novalidate></form>
         </section>
