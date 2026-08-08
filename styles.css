@@ -738,6 +738,19 @@ body {
   background: rgba(179, 38, 30, 0.2);
 }
 
+.btn-edit:disabled,
+.btn-delete:disabled {
+  color: var(--muted);
+  background: rgba(127, 127, 127, 0.12);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn-edit:disabled:hover,
+.btn-delete:disabled:hover {
+  background: rgba(127, 127, 127, 0.12);
+}
+
 .empty-state {
   padding: 34px;
   text-align: center;
