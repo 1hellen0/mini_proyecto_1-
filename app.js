@@ -15,7 +15,8 @@
         { key: 'nombre', label: 'Nombre', type: 'text', required: true },
         { key: 'email', label: 'Correo electrónico', type: 'email', required: true },
         { key: 'telefono', label: 'Teléfono', type: 'tel' },
-        { key: 'estado', label: 'Estado', type: 'select', options: ['Activo', 'Inactivo', 'Pendiente'] }
+        { key: 'estado', label: 'Estado', type: 'select', options: ['Activo', 'Inactivo', 'Pendiente'] },
+        { key: 'fechaRegistro', label: 'Fecha de registro', type: 'date' }
       ],
       resumen: function (data) {
         return [
@@ -30,7 +31,8 @@
         { key: 'nombre', label: 'Nombre', type: 'text', required: true },
         { key: 'categoria', label: 'Categoría', type: 'text' },
         { key: 'precio', label: 'Precio', type: 'number', min: 0, step: '0.01', format: function (v) { return '$ ' + Number(v).toLocaleString('es-CO'); } },
-        { key: 'stock', label: 'Stock', type: 'number', min: 0 }
+        { key: 'stock', label: 'Stock', type: 'number', min: 0 },
+        { key: 'fechaRegistro', label: 'Fecha de registro', type: 'date' }
       ],
       resumen: function (data) {
         return [
@@ -45,7 +47,8 @@
         { key: 'nombre', label: 'Nombre', type: 'text', required: true },
         { key: 'contacto', label: 'Contacto', type: 'text' },
         { key: 'telefono', label: 'Teléfono', type: 'tel' },
-        { key: 'estado', label: 'Estado', type: 'select', options: ['Activo', 'En revisión', 'Inactivo'] }
+        { key: 'estado', label: 'Estado', type: 'select', options: ['Activo', 'En revisión', 'Inactivo'] },
+        { key: 'fechaRegistro', label: 'Fecha de registro', type: 'date' }
       ],
       resumen: function (data) {
         return [
@@ -56,42 +59,57 @@
     }
   };
 
+  function pad2(n) {
+    return ('0' + n).slice(-2);
+  }
+
+  function todayIso() {
+    var d = new Date();
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+  }
+
+  function daysAgoIso(n) {
+    var d = new Date();
+    d.setDate(d.getDate() - n);
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+  }
+
   var SEED = {
     clientes: [
-      { id: 1, nombre: 'María López', email: 'maria.lopez@empresa.com', telefono: '300 123 4567', estado: 'Activo' },
-      { id: 2, nombre: 'Juan Pérez', email: 'juan.perez@correo.com', telefono: '311 234 5678', estado: 'Activo' },
-      { id: 3, nombre: 'Ana Torres', email: 'ana.torres@negocio.com', telefono: '320 345 6789', estado: 'Pendiente' },
-      { id: 4, nombre: 'Carlos Ramírez', email: 'carlos.ramirez@comercio.com', telefono: '301 456 7890', estado: 'Activo' },
-      { id: 5, nombre: 'Lucía Gómez', email: 'lucia.gomez@tienda.com', telefono: '315 567 8901', estado: 'Inactivo' },
-      { id: 6, nombre: 'Pedro Sánchez', email: 'pedro.sanchez@empresa.com', telefono: '312 678 9012', estado: 'Activo' },
-      { id: 7, nombre: 'Valentina Rojas', email: 'valentina.rojas@firma.com', telefono: '313 789 0123', estado: 'Pendiente' },
-      { id: 8, nombre: 'Andrés Díaz', email: 'andres.diaz@negocio.com', telefono: '317 890 1234', estado: 'Activo' },
-      { id: 9, nombre: 'Camila Castro', email: 'camila.castro@correo.com', telefono: '319 901 2345', estado: 'Activo' },
-      { id: 10, nombre: 'Felipe Mora', email: 'felipe.mora@tienda.com', telefono: '316 012 3456', estado: 'Pendiente' }
+      { id: 1, nombre: 'María López', email: 'maria.lopez@empresa.com', telefono: '300 123 4567', estado: 'Activo', fechaRegistro: daysAgoIso(0) },
+      { id: 2, nombre: 'Juan Pérez', email: 'juan.perez@correo.com', telefono: '311 234 5678', estado: 'Activo', fechaRegistro: daysAgoIso(1) },
+      { id: 3, nombre: 'Ana Torres', email: 'ana.torres@negocio.com', telefono: '320 345 6789', estado: 'Pendiente', fechaRegistro: daysAgoIso(1) },
+      { id: 4, nombre: 'Carlos Ramírez', email: 'carlos.ramirez@comercio.com', telefono: '301 456 7890', estado: 'Activo', fechaRegistro: daysAgoIso(2) },
+      { id: 5, nombre: 'Lucía Gómez', email: 'lucia.gomez@tienda.com', telefono: '315 567 8901', estado: 'Inactivo', fechaRegistro: daysAgoIso(3) },
+      { id: 6, nombre: 'Pedro Sánchez', email: 'pedro.sanchez@empresa.com', telefono: '312 678 9012', estado: 'Activo', fechaRegistro: daysAgoIso(4) },
+      { id: 7, nombre: 'Valentina Rojas', email: 'valentina.rojas@firma.com', telefono: '313 789 0123', estado: 'Pendiente', fechaRegistro: daysAgoIso(5) },
+      { id: 8, nombre: 'Andrés Díaz', email: 'andres.diaz@negocio.com', telefono: '317 890 1234', estado: 'Activo', fechaRegistro: daysAgoIso(6) },
+      { id: 9, nombre: 'Camila Castro', email: 'camila.castro@correo.com', telefono: '319 901 2345', estado: 'Activo', fechaRegistro: daysAgoIso(7) },
+      { id: 10, nombre: 'Felipe Mora', email: 'felipe.mora@tienda.com', telefono: '316 012 3456', estado: 'Pendiente', fechaRegistro: daysAgoIso(8) }
     ],
     productos: [
-      { id: 1, nombre: 'Laptop Pro 15"', categoria: 'Computación', precio: 2450000, stock: 12 },
-      { id: 2, nombre: 'Teclado mecánico RGB', categoria: 'Periféricos', precio: 145000, stock: 38 },
-      { id: 3, nombre: 'Monitor 27" 4K', categoria: 'Pantallas', precio: 980000, stock: 7 },
-      { id: 4, nombre: 'Mouse inalámbrico', categoria: 'Periféricos', precio: 62000, stock: 64 },
-      { id: 5, nombre: 'Impresora multifuncional', categoria: 'Impresión', precio: 420000, stock: 9 },
-      { id: 6, nombre: 'Audífonos Bluetooth', categoria: 'Audio', precio: 210000, stock: 25 },
-      { id: 7, nombre: 'Router WiFi 6', categoria: 'Redes', precio: 350000, stock: 14 },
-      { id: 8, nombre: 'Silla ergonómica', categoria: 'Mobiliario', precio: 680000, stock: 4 },
-      { id: 9, nombre: 'Tablet 10.5"', categoria: 'Tabletas', precio: 890000, stock: 11 },
-      { id: 10, nombre: 'Disco SSD 1TB', categoria: 'Almacenamiento', precio: 310000, stock: 30 }
+      { id: 1, nombre: 'Laptop Pro 15"', categoria: 'Computación', precio: 2450000, stock: 12, fechaRegistro: daysAgoIso(0) },
+      { id: 2, nombre: 'Teclado mecánico RGB', categoria: 'Periféricos', precio: 145000, stock: 38, fechaRegistro: daysAgoIso(1) },
+      { id: 3, nombre: 'Monitor 27" 4K', categoria: 'Pantallas', precio: 980000, stock: 7, fechaRegistro: daysAgoIso(2) },
+      { id: 4, nombre: 'Mouse inalámbrico', categoria: 'Periféricos', precio: 62000, stock: 64, fechaRegistro: daysAgoIso(2) },
+      { id: 5, nombre: 'Impresora multifuncional', categoria: 'Impresión', precio: 420000, stock: 9, fechaRegistro: daysAgoIso(3) },
+      { id: 6, nombre: 'Audífonos Bluetooth', categoria: 'Audio', precio: 210000, stock: 25, fechaRegistro: daysAgoIso(4) },
+      { id: 7, nombre: 'Router WiFi 6', categoria: 'Redes', precio: 350000, stock: 14, fechaRegistro: daysAgoIso(5) },
+      { id: 8, nombre: 'Silla ergonómica', categoria: 'Mobiliario', precio: 680000, stock: 4, fechaRegistro: daysAgoIso(6) },
+      { id: 9, nombre: 'Tablet 10.5"', categoria: 'Tabletas', precio: 890000, stock: 11, fechaRegistro: daysAgoIso(7) },
+      { id: 10, nombre: 'Disco SSD 1TB', categoria: 'Almacenamiento', precio: 310000, stock: 30, fechaRegistro: daysAgoIso(8) }
     ],
     proveedores: [
-      { id: 1, nombre: 'TecnoImport', contacto: 'Laura Vélez', telefono: '305 111 2233', estado: 'Activo' },
-      { id: 2, nombre: 'Distribuidora Andina', contacto: 'Ricardo Paz', telefono: '310 222 3344', estado: 'En revisión' },
-      { id: 3, nombre: 'Suministros Global', contacto: 'Marta Ruiz', telefono: '322 333 4455', estado: 'Activo' },
-      { id: 4, nombre: 'RedPoint S.A.S.', contacto: 'Julián Cárdenas', telefono: '318 444 5566', estado: 'Activo' },
-      { id: 5, nombre: 'Comercial Norte', contacto: 'Silvia Peña', telefono: '301 555 6677', estado: 'En revisión' },
-      { id: 6, nombre: 'Almacenes Digitales', contacto: 'Óscar Luna', telefono: '312 666 7788', estado: 'Inactivo' },
-      { id: 7, nombre: 'Tech Supply', contacto: 'Karen Duarte', telefono: '320 777 8899', estado: 'Activo' },
-      { id: 8, nombre: 'Importadora Latina', contacto: 'Andrés Pineda', telefono: '313 888 9900', estado: 'Activo' },
-      { id: 9, nombre: 'Equipos y Suministros', contacto: 'Diana Franco', telefono: '311 999 0011', estado: 'En revisión' },
-      { id: 10, nombre: 'Mercado Tecnológico', contacto: 'Iván Salazar', telefono: '315 000 1122', estado: 'Activo' }
+      { id: 1, nombre: 'TecnoImport', contacto: 'Laura Vélez', telefono: '305 111 2233', estado: 'Activo', fechaRegistro: daysAgoIso(0) },
+      { id: 2, nombre: 'Distribuidora Andina', contacto: 'Ricardo Paz', telefono: '310 222 3344', estado: 'En revisión', fechaRegistro: daysAgoIso(1) },
+      { id: 3, nombre: 'Suministros Global', contacto: 'Marta Ruiz', telefono: '322 333 4455', estado: 'Activo', fechaRegistro: daysAgoIso(2) },
+      { id: 4, nombre: 'RedPoint S.A.S.', contacto: 'Julián Cárdenas', telefono: '318 444 5566', estado: 'Activo', fechaRegistro: daysAgoIso(3) },
+      { id: 5, nombre: 'Comercial Norte', contacto: 'Silvia Peña', telefono: '301 555 6677', estado: 'En revisión', fechaRegistro: daysAgoIso(4) },
+      { id: 6, nombre: 'Almacenes Digitales', contacto: 'Óscar Luna', telefono: '312 666 7788', estado: 'Inactivo', fechaRegistro: daysAgoIso(5) },
+      { id: 7, nombre: 'Tech Supply', contacto: 'Karen Duarte', telefono: '320 777 8899', estado: 'Activo', fechaRegistro: daysAgoIso(6) },
+      { id: 8, nombre: 'Importadora Latina', contacto: 'Andrés Pineda', telefono: '313 888 9900', estado: 'Activo', fechaRegistro: daysAgoIso(7) },
+      { id: 9, nombre: 'Equipos y Suministros', contacto: 'Diana Franco', telefono: '311 999 0011', estado: 'En revisión', fechaRegistro: daysAgoIso(8) },
+      { id: 10, nombre: 'Mercado Tecnológico', contacto: 'Iván Salazar', telefono: '315 000 1122', estado: 'Activo', fechaRegistro: daysAgoIso(9) }
     ]
   };
 
@@ -109,6 +127,37 @@
 
   var records = load();
   var editingId = null;
+  var PAGE_SIZE = 5;
+  var currentPage = 1;
+  var dateFilter = document.getElementById('dateFilter');
+  var searchFilter = document.getElementById('searchFilter');
+
+  function normalizeText(value) {
+    return String(value == null ? '' : value).toLowerCase()
+      .replace(/á/g, 'a').replace(/é/g, 'e').replace(/í/g, 'i')
+      .replace(/ó/g, 'o').replace(/ú/g, 'u').replace(/ñ/g, 'n');
+  }
+
+  function getVisibleRecords() {
+    var keyword = searchFilter ? normalizeText(searchFilter.value) : '';
+    return records.filter(function (r) {
+      if (dateFilter && dateFilter.value && (r.fechaRegistro || '').slice(0, 10) !== dateFilter.value) {
+        return false;
+      }
+      if (keyword) {
+        var found = config.fields.some(function (f) {
+          return normalizeText(r[f.key]).indexOf(keyword) !== -1;
+        });
+        if (!found) return false;
+      }
+      return true;
+    });
+  }
+
+  function applyFilters() {
+    currentPage = 1;
+    renderAll();
+  }
 
   var isAdmin = window.QUANTUM_ROLE === 'admin';
 
@@ -176,14 +225,23 @@
   });
 
   function load() {
+    var data;
     try {
       var raw = localStorage.getItem(storageKey);
-      if (raw) return JSON.parse(raw);
+      if (raw) data = JSON.parse(raw);
     } catch (err) {
-      return [];
+      data = [];
     }
-    localStorage.setItem(storageKey, JSON.stringify(SEED[page]));
-    return SEED[page].slice();
+    if (!data) {
+      data = SEED[page].slice();
+      localStorage.setItem(storageKey, JSON.stringify(data));
+    } else {
+      data = data.map(function (r) {
+        if (!r.fechaRegistro) return Object.assign({}, r, { fechaRegistro: todayIso() });
+        return r;
+      });
+    }
+    return data;
   }
 
   function save() {
@@ -223,6 +281,7 @@
         if (f.step) input.step = f.step;
       }
       input.name = f.key;
+      if (f.type === 'date' && !input.value) input.value = todayIso();
       label.appendChild(input);
       form.appendChild(label);
     });
@@ -237,6 +296,9 @@
 
   function resetForm() {
     form.reset();
+    config.fields.forEach(function (f) {
+      if (f.type === 'date') form.elements[f.key].value = todayIso();
+    });
     editingId = null;
     formTitle.textContent = 'Nuevo ' + config.singular;
     btnCancel.classList.add('is-hidden');
@@ -284,18 +346,32 @@
     headRow.appendChild(thAction);
     tableHead.appendChild(headRow);
 
-    if (!records.length) {
+    var visible = getVisibleRecords();
+
+    if (!visible.length) {
       var empty = document.createElement('tr');
       var emptyTd = document.createElement('td');
       emptyTd.className = 'empty-state';
       emptyTd.colSpan = config.fields.length + 1;
-      emptyTd.textContent = 'No hay registros. Crea el primero con el formulario.';
+      emptyTd.textContent = dateFilter && dateFilter.value
+        ? 'No hay registros para la fecha seleccionada.'
+        : (searchFilter && searchFilter.value
+          ? 'No hay registros para la búsqueda.'
+          : 'No hay registros. Crea el primero con el formulario.');
       empty.appendChild(emptyTd);
       tableBody.appendChild(empty);
+      renderPagination();
       return;
     }
 
-    records.forEach(function (rec) {
+    var totalPages = Math.ceil(visible.length / PAGE_SIZE);
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+
+    var start = (currentPage - 1) * PAGE_SIZE;
+    var pageRecords = visible.slice(start, start + PAGE_SIZE);
+
+    pageRecords.forEach(function (rec) {
       var tr = document.createElement('tr');
       config.fields.forEach(function (f) {
         var td = document.createElement('td');
@@ -342,6 +418,73 @@
       tr.appendChild(tdAction);
       tableBody.appendChild(tr);
     });
+
+    renderPagination();
+  }
+
+  function renderPagination() {
+    var pagination = document.getElementById('pagination');
+    if (!pagination) return;
+
+    var visible = getVisibleRecords();
+    var totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
+    pagination.innerHTML = '';
+
+    var start = visible.length ? (currentPage - 1) * PAGE_SIZE + 1 : 0;
+    var end = Math.min(currentPage * PAGE_SIZE, visible.length);
+
+    var info = document.createElement('span');
+    info.className = 'pagination-info';
+    info.textContent = visible.length
+      ? 'Mostrando ' + start + '-' + end + ' de ' + visible.length
+      : 'Sin registros';
+    pagination.appendChild(info);
+
+    var controls = document.createElement('div');
+    controls.className = 'pagination-controls';
+
+    var prev = document.createElement('button');
+    prev.type = 'button';
+    prev.className = 'pagination-btn';
+    prev.textContent = 'Anterior';
+    prev.disabled = currentPage <= 1;
+    prev.addEventListener('click', function () {
+      if (currentPage > 1) {
+        currentPage--;
+        renderTable();
+      }
+    });
+    controls.appendChild(prev);
+
+    for (var i = 1; i <= totalPages; i++) {
+      (function (pageNum) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'pagination-btn' + (pageNum === currentPage ? ' is-active' : '');
+        btn.textContent = pageNum;
+        if (pageNum === currentPage) btn.setAttribute('aria-current', 'page');
+        btn.addEventListener('click', function () {
+          currentPage = pageNum;
+          renderTable();
+        });
+        controls.appendChild(btn);
+      })(i);
+    }
+
+    var next = document.createElement('button');
+    next.type = 'button';
+    next.className = 'pagination-btn';
+    next.textContent = 'Siguiente';
+    next.disabled = currentPage >= totalPages;
+    next.addEventListener('click', function () {
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderTable();
+      }
+    });
+    controls.appendChild(next);
+
+    pagination.appendChild(controls);
   }
 
   function renderAll() {
@@ -409,6 +552,7 @@
             return;
           }
           data.id = uid();
+          data.fechaRegistro = data.fechaRegistro || todayIso();
           records.push(data);
           added++;
         });
@@ -487,6 +631,7 @@
       toast('Registro actualizado');
     } else {
       data.id = uid();
+      data.fechaRegistro = data.fechaRegistro || todayIso();
       records.push(data);
       toast('Registro creado');
     }
@@ -506,6 +651,13 @@
     if (btn.dataset.action === 'edit') startEdit(id);
     if (btn.dataset.action === 'delete') removeRecord(id);
   });
+
+  if (dateFilter) {
+    dateFilter.addEventListener('change', applyFilters);
+  }
+  if (searchFilter) {
+    searchFilter.addEventListener('input', applyFilters);
+  }
 
   buildForm();
   btnCancel = document.getElementById('btnCancel');
