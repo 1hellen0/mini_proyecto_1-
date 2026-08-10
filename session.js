@@ -1,6 +1,10 @@
 (function () {
   'use strict';
 
+  if (localStorage.getItem('darkMode') === '1') {
+    document.body.classList.add('dark');
+  }
+
   function getSession() {
     try {
       var raw = localStorage.getItem('quantum_session');
