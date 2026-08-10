@@ -52,3 +52,20 @@ if (track && dotsContainer) {
   updateDots();
   restartAutoPlay();
 }
+
+const darkModeBtn = document.getElementById('darkModeBtn');
+
+function applyDarkMode(enabled) {
+  document.body.classList.toggle('dark', enabled);
+  if (darkModeBtn) {
+    darkModeBtn.setAttribute('aria-pressed', String(enabled));
+  }
+  localStorage.setItem('darkMode', enabled ? '1' : '0');
+}
+
+if (darkModeBtn) {
+  applyDarkMode(localStorage.getItem('darkMode') === '1');
+  darkModeBtn.addEventListener('click', () => {
+    applyDarkMode(!document.body.classList.contains('dark'));
+  });
+}
