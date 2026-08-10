@@ -147,7 +147,6 @@
 
     showError('');
     errorMsg.hidden = true;
-    alert('Bienvenido de nuevo, ' + user.name + '!');
     window.location.href = 'admin.html';
   });
 
