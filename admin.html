@@ -99,24 +99,33 @@
             <h3>Tareas prioritarias</h3>
             <ul class="task-list" id="taskList">
               <li>
-                <span></span>
+                <input type="checkbox" class="task-check" aria-label="Marcar como completada">
                 <div>
                   <strong>Validar proveedores nuevos</strong>
                   <p>Revisar documentación y estado comercial.</p>
                 </div>
+                <div class="task-actions">
+                  <button type="button" class="btn-delete task-delete">Eliminar</button>
+                </div>
               </li>
               <li>
-                <span></span>
+                <input type="checkbox" class="task-check" aria-label="Marcar como completada">
                 <div>
                   <strong>Actualizar inventario</strong>
                   <p>Sincronizar productos con disponibilidad real.</p>
                 </div>
+                <div class="task-actions">
+                  <button type="button" class="btn-delete task-delete">Eliminar</button>
+                </div>
               </li>
               <li>
-                <span></span>
+                <input type="checkbox" class="task-check" aria-label="Marcar como completada">
                 <div>
                   <strong>Seguimiento a clientes clave</strong>
                   <p>Consultar historiales y solicitudes abiertas.</p>
+                </div>
+                <div class="task-actions">
+                  <button type="button" class="btn-delete task-delete">Eliminar</button>
                 </div>
               </li>
             </ul>
@@ -164,6 +173,18 @@
           <button type="submit" class="primary-action">Guardar tarea</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <div class="modal" id="deleteTaskModal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="deleteTaskModalTitle">
+      <h3 id="deleteTaskModalTitle">Eliminar tarea</h3>
+      <p id="deleteTaskMessage">¿Deseas eliminar esta tarea?</p>
+      <div class="modal-actions">
+        <button type="button" id="deleteTaskCancel" class="btn-ghost">Cancelar</button>
+        <button type="button" id="deleteTaskOk" class="btn-danger">Eliminar</button>
+      </div>
     </div>
   </div>
 
