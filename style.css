@@ -76,6 +76,8 @@ body {
 .login-btn {
   background: var(--primary);
   color: var(--white);
+  padding: 14px 28px;
+  font-size: 1.05rem;
 }
 
 .menu-btn {
@@ -159,42 +161,6 @@ body {
 }
 
 .dropdown-menu .dropdown-dark-btn:hover {
-  background: #f3f4f6;
-}
-
-.translator-wrapper {
-  position: relative;
-}
-
-.language-menu {
-  position: absolute;
-  right: 0;
-  top: 100%;
-  display: none;
-  flex-direction: column;
-  background: var(--white);
-  border-radius: 12px;
-  min-width: 160px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-  overflow: hidden;
-  z-index: 10;
-}
-
-.language-menu.show {
-  display: flex;
-}
-
-.language-menu button {
-  border: none;
-  background: none;
-  text-align: left;
-  padding: 10px 16px;
-  font: inherit;
-  color: var(--text);
-  cursor: pointer;
-}
-
-.language-menu button:hover {
   background: #f3f4f6;
 }
 
@@ -501,15 +467,6 @@ body.dark .dropdown-menu .dropdown-dark-btn {
 
 body.dark .dropdown-menu a:hover,
 body.dark .dropdown-menu .dropdown-dark-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-}
-
-body.dark .language-menu {
-  background: #14202e;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-}
-
-body.dark .language-menu button:hover {
   background: rgba(255, 255, 255, 0.08);
 }
 
