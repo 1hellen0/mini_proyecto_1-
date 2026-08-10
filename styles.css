@@ -119,9 +119,15 @@ body {
 }
 
 .sidebar-menu a {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding: 13px 14px;
   border: 1px solid var(--line);
+}
+
+.sidebar-menu a svg {
+  flex-shrink: 0;
 }
 
 .sidebar-menu a:hover,
