@@ -1,5 +1,9 @@
 (function(){
 
+  if (localStorage.getItem('darkMode') === '1') {
+    document.body.classList.add('dark');
+  }
+
   const form = document.getElementById('login-form');
   const emailInput = document.getElementById('email');
   const passwordInput = document.getElementById('password');
