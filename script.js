@@ -1,3 +1,15 @@
+const nightToggle = document.getElementById('nightToggle');
+
+if (nightToggle) {
+  nightToggle.checked = localStorage.getItem('quantum-night') === '1';
+  document.body.classList.toggle('dark', nightToggle.checked);
+
+  nightToggle.addEventListener('change', () => {
+    document.body.classList.toggle('dark', nightToggle.checked);
+    localStorage.setItem('quantum-night', nightToggle.checked ? '1' : '0');
+  });
+}
+
 const menuBtn = document.getElementById('menuBtn');
 const dropdownMenu = document.getElementById('dropdownMenu');
 

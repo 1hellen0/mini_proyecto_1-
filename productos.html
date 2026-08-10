@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantum + | Productos</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body data-module="productos">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand-area">
+        <a class="logo" href="admin.html" aria-label="Inicio Quantum +">
+          <span class="logo-mark">Q+</span>
+          <span class="logo-name">Quantum +</span>
+        </a>
+
+        <nav class="sidebar-menu" aria-label="Menú administrativo">
+          <a href="admin.html">Resumen Administrativo</a>
+          <a href="clientes.html">Administración de clientes</a>
+          <a href="productos.html">Administración de productos</a>
+          <a href="proveedores.html">Administración de proveedores</a>
+          <a href="pedidos.html">Pedidos de Clientes</a>
+        </nav>
+      </div>
+    </aside>
+
+    <div class="content-shell">
+      <header class="topbar">
+        <section class="user-info" aria-label="Información del usuario">
+          <div>
+            <p class="user-role">Vista Administrativa</p>
+            <h2 id="userName">Bryan Gomez</h2>
+          </div>
+          <div class="user-dropdown">
+            <button type="button" class="user-avatar" id="userAvatar" aria-expanded="false" aria-haspopup="true">BG</button>
+            <div class="user-menu" id="userMenu" role="menu">
+              <a href="#" id="logoutBtn" role="menuitem">Cerrar sesión</a>
+            </div>
+          </div>
+        </section>
+      </header>
+
+      <main class="dashboard">
+        <section class="work-area module-view">
+          <p class="eyebrow">Módulo administrativo</p>
+          <h1>Administración de productos</h1>
+          <div class="module-grid" id="summaryGrid" aria-label="Resumen de productos"></div>
+        </section>
+
+        <section class="work-area">
+          <div class="work-header">
+            <div>
+              <p class="eyebrow">Registro</p>
+              <h2 id="formTitle">Nuevo producto</h2>
+            </div>
+            <button type="button" id="uploadBtn" class="btn-upload">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              Subir archivo
+            </button>
+            <input type="file" id="uploadInput" accept=".xlsx,.xls,.csv" hidden>
+          </div>
+          <form id="recordForm" class="record-form" novalidate></form>
+        </section>
+
+        <section class="work-area">
+          <div class="work-header">
+            <div>
+              <p class="eyebrow">Listado</p>
+              <h2>Productos registrados</h2>
+            </div>
+            <div class="filters">
+              <label class="filter-field">
+                <span>Buscar</span>
+                <input type="search" id="searchFilter" placeholder="Palabra clave">
+              </label>
+              <label class="filter-field">
+                <span>Filtrar por fecha de registro</span>
+                <input type="date" id="dateFilter">
+              </label>
+            </div>
+          </div>
+          <div class="table-card">
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead id="tableHead"></thead>
+                <tbody id="tableBody"></tbody>
+              </table>
+            </div>
+            <nav class="pagination" id="pagination" aria-label="Paginación del listado"></nav>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script src="session.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
