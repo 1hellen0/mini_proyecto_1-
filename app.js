@@ -148,6 +148,10 @@
     { id: 10, cliente: SEED.clientes[7].nombre, proveedor: SEED.proveedores[6].nombre, producto: 'Mouse inalámbrico', cantidad: 20, total: 1240000, estado: 'Entregado', fechaRegistro: daysAgoIso(0) }
   ];
 
+  var FIELD_DEFAULTS = {
+    proveedores: { tipoSuministro: 'Tecnología' }
+  };
+
   var page = document.body.dataset.module;
   if (!page || !MODULES[page]) return;
 
@@ -258,10 +262,6 @@
     closeModal();
     if (fn) fn();
   });
-
-  var FIELD_DEFAULTS = {
-    proveedores: { tipoSuministro: 'Tecnología' }
-  };
 
   function load() {
     var data;
