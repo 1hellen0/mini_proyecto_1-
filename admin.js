@@ -90,3 +90,55 @@
 
   renderTasks();
 })();
+
+(function () {
+  'use strict';
+
+  function pct(count, total) {
+    return total ? Math.round((count / total) * 100) : 0;
+  }
+
+  function setText(id, value) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = value;
+  }
+
+  function setMeter(barId, labelId, value) {
+    var bar = document.getElementById(barId);
+    var label = document.getElementById(labelId);
+    if (bar) bar.style.width = value + '%';
+    if (label) label.textContent = value + '%';
+  }
+
+  function renderSummary() {
+    if (!window.QUANTUM || !window.QUANTUM.loadRecords) return;
+
+    var clientes = QUANTUM.loadRecords('clientes');
+    var productos = QUANTUM.loadRecords('productos');
+    var proveedores = QUANTUM.loadRecords('proveedores');
+    var pedidos = QUANTUM.loadRecords('pedidos');
+
+    var fmt = function (n) { return n.toLocaleString('es-CO'); };
+    var activos = clientes.filter(function (r) { return r.estado === 'Activo'; }).length;
+    var stockCritico = productos.filter(function (r) { return Number(r.stock) < 10; }).length;
+    var enRevision = proveedores.filter(function (r) { return r.estado === 'En revisión'; }).length;
+    var enTransito = pedidos.filter(function (r) { return r.estado === 'En tránsito'; }).length;
+    var productosDisponibles = productos.filter(function (r) { return Number(r.stock) > 0; }).length;
+    var proveedoresActivos = proveedores.filter(function (r) { return r.estado === 'Activo'; }).length;
+
+    setText('valueClientes', fmt(activos));
+    setText('smallClientes', 'De ' + fmt(clientes.length) + ' clientes registrados');
+    setText('valueProductos', fmt(productos.length));
+    setText('smallProductos', fmt(stockCritico) + ' con stock crítico');
+    setText('valueProveedores', fmt(proveedores.length));
+    setText('smallProveedores', fmt(enRevision) + ' en revisión');
+    setText('valuePedidos', fmt(pedidos.length));
+    setText('smallPedidos', fmt(enTransito) + ' en tránsito');
+
+    setMeter('meterClientes', 'meterClientesPct', pct(activos, clientes.length));
+    setMeter('meterProductos', 'meterProductosPct', pct(productosDisponibles, productos.length));
+    setMeter('meterProveedores', 'meterProveedoresPct', pct(proveedoresActivos, proveedores.length));
+  }
+
+  renderSummary();
+})();

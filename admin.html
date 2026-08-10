@@ -61,26 +61,26 @@
         <article class="summary-card">
           <span class="card-icon">01</span>
           <p>Clientes activos</p>
-          <h3>1,284</h3>
-          <small>+12% este mes</small>
+          <h3 id="valueClientes">0</h3>
+          <small id="smallClientes">Cargando…</small>
         </article>
         <article class="summary-card">
           <span class="card-icon">02</span>
           <p>Productos registrados</p>
-          <h3>836</h3>
-          <small>42 nuevos ingresos</small>
+          <h3 id="valueProductos">0</h3>
+          <small id="smallProductos">Cargando…</small>
         </article>
         <article class="summary-card">
           <span class="card-icon">03</span>
           <p>Proveedores</p>
-          <h3>96</h3>
-          <small>18 pendientes de revision</small>
+          <h3 id="valueProveedores">0</h3>
+          <small id="smallProveedores">Cargando…</small>
         </article>
         <article class="summary-card">
           <span class="card-icon">04</span>
           <p>Ordenes procesadas</p>
-          <h3>2,451</h3>
-          <small>Rendimiento estable</small>
+          <h3 id="valuePedidos">0</h3>
+          <small id="smallPedidos">Cargando…</small>
         </article>
       </section>
 
@@ -125,18 +125,18 @@
             <h3>Rendimiento operativo</h3>
             <div class="metric-row">
               <span>Clientes</span>
-              <div class="meter"><span style="width: 82%"></span></div>
-              <strong>82%</strong>
+              <div class="meter"><span id="meterClientes" style="width: 0%"></span></div>
+              <strong id="meterClientesPct">0%</strong>
             </div>
             <div class="metric-row">
               <span>Productos</span>
-              <div class="meter"><span style="width: 71%"></span></div>
-              <strong>71%</strong>
+              <div class="meter"><span id="meterProductos" style="width: 0%"></span></div>
+              <strong id="meterProductosPct">0%</strong>
             </div>
             <div class="metric-row">
               <span>Proveedores</span>
-              <div class="meter"><span style="width: 64%"></span></div>
-              <strong>64%</strong>
+              <div class="meter"><span id="meterProveedores" style="width: 0%"></span></div>
+              <strong id="meterProveedoresPct">0%</strong>
             </div>
           </article>
         </div>
@@ -167,6 +167,7 @@
   </div>
 
   <script src="session.js"></script>
+  <script src="data.js"></script>
   <script src="admin.js"></script>
 </body>
 </html>
