@@ -16,6 +16,7 @@
         </a>
 
         <nav class="sidebar-menu" aria-label="Menú administrativo">
+          <a href="admin.html" class="active">Resumen Administrativo</a>
           <a href="clientes.html">Administración de clientes</a>
           <a href="productos.html">Administración de productos</a>
           <a href="proveedores.html">Administración de proveedores</a>
@@ -88,13 +89,13 @@
             <p class="eyebrow">Flujo principal</p>
             <h2>Área principal de trabajo</h2>
           </div>
-          <button type="button" class="primary-action">Nueva tarea</button>
+          <button type="button" class="primary-action" id="newTaskBtn">Nueva tarea</button>
         </div>
 
         <div class="task-layout">
           <article class="operations-panel">
             <h3>Tareas prioritarias</h3>
-            <ul class="task-list">
+            <ul class="task-list" id="taskList">
               <li>
                 <span></span>
                 <div>
@@ -143,6 +144,28 @@
     </div>
   </div>
 
+  <div class="modal" id="taskModal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle">
+      <h3 id="taskModalTitle">Nueva tarea</h3>
+      <form id="taskForm" novalidate>
+        <label class="form-field">
+          <span>Título de la tarea *</span>
+          <input type="text" id="taskTitle" name="titulo" maxlength="80" placeholder="Ej. Validar proveedores nuevos">
+        </label>
+        <label class="form-field">
+          <span>Descripción</span>
+          <textarea id="taskDescription" name="descripcion" rows="3" placeholder="Detalle de la tarea"></textarea>
+        </label>
+        <div class="modal-actions">
+          <button type="button" id="taskCancel" class="btn-ghost">Cancelar</button>
+          <button type="submit" class="primary-action">Guardar tarea</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="session.js"></script>
+  <script src="admin.js"></script>
 </body>
 </html>
