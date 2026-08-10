@@ -159,6 +159,8 @@
     renderAll();
   }
 
+  var isAdmin = window.QUANTUM_ROLE === 'admin';
+
   document.querySelectorAll('.sidebar-menu a').forEach(function (link) {
     if (link.getAttribute('href') === page + '.html') link.classList.add('active');
   });
@@ -389,9 +391,30 @@
 
       var tdAction = document.createElement('td');
       tdAction.className = 'row-actions';
-      tdAction.innerHTML =
-        '<button type="button" class="btn-edit" data-action="edit" data-id="' + rec.id + '">Editar</button>' +
-        '<button type="button" class="btn-delete" data-action="delete" data-id="' + rec.id + '">Eliminar</button>';
+
+      var editBtn = document.createElement('button');
+      editBtn.type = 'button';
+      editBtn.className = 'btn-edit';
+      editBtn.textContent = 'Editar';
+      editBtn.dataset.action = 'edit';
+      editBtn.dataset.id = rec.id;
+
+      var deleteBtn = document.createElement('button');
+      deleteBtn.type = 'button';
+      deleteBtn.className = 'btn-delete';
+      deleteBtn.textContent = 'Eliminar';
+      deleteBtn.dataset.action = 'delete';
+      deleteBtn.dataset.id = rec.id;
+
+      if (!isAdmin) {
+        editBtn.disabled = true;
+        editBtn.title = 'Solo administradores';
+        deleteBtn.disabled = true;
+        deleteBtn.title = 'Solo administradores';
+      }
+
+      tdAction.appendChild(editBtn);
+      tdAction.appendChild(deleteBtn);
       tr.appendChild(tdAction);
       tableBody.appendChild(tr);
     });
@@ -564,6 +587,10 @@
   }
 
   function startEdit(id) {
+    if (!isAdmin) {
+      toast('No tienes permisos para editar registros');
+      return;
+    }
     var rec = records.filter(function (r) { return Number(r.id) === Number(id); })[0];
     if (!rec) return;
     editingId = Number(id);
@@ -576,6 +603,10 @@
   }
 
   function removeRecord(id) {
+    if (!isAdmin) {
+      toast('No tienes permisos para eliminar registros');
+      return;
+    }
     openModal('¿Eliminar este ' + config.singular + '?', function () {
       records = records.filter(function (r) { return Number(r.id) !== Number(id); });
       save();
@@ -612,6 +643,10 @@
   tableBody.addEventListener('click', function (e) {
     var btn = e.target.closest('button[data-action]');
     if (!btn) return;
+    if (!isAdmin) {
+      toast('No tienes permisos para modificar registros');
+      return;
+    }
     var id = btn.dataset.id;
     if (btn.dataset.action === 'edit') startEdit(id);
     if (btn.dataset.action === 'delete') removeRecord(id);
