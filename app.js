@@ -64,9 +64,9 @@
     pedidos: {
       singular: 'pedido',
       fields: [
-        { key: 'cliente', label: 'Cliente', type: 'select', optionsFrom: 'clientes', display: 'nombre' },
+        { key: 'cliente', label: 'Cliente', type: 'text', required: true, predictive: 'clientes', display: 'nombre', search: ['nombre', 'email'], labelKeys: ['email'] },
         { key: 'proveedor', label: 'Proveedor', type: 'select', optionsFrom: 'proveedores', display: 'nombre' },
-        { key: 'producto', label: 'Producto', type: 'text', required: true, predictive: 'productos' },
+        { key: 'producto', label: 'Producto', type: 'text', required: true, predictive: 'productos', display: 'nombre', search: ['nombre', 'categoria'], labelKeys: ['categoria', 'precio'] },
         { key: 'cantidad', label: 'Cantidad', type: 'number', min: 0 },
         { key: 'total', label: 'Valor total', type: 'number', min: 0, step: '0.01', format: function (v) { return '$ ' + Number(v).toLocaleString('es-CO'); } },
         { key: 'estado', label: 'Estado', type: 'select', options: ['Pendiente', 'En tránsito', 'Entregado', 'Cancelado'] },
@@ -384,8 +384,21 @@
     list.className = 'predictive-list';
     wrapper.appendChild(list);
 
-    function getProducts() {
+    var isProductField = field.key === 'producto';
+    var searchKeys = field.search || [field.display];
+
+    function getRecords() {
       return getOptionsFrom(field.predictive);
+    }
+
+    function itemLabel(item) {
+      var parts = [String(item[field.display] != null ? item[field.display] : item.id)];
+      (field.labelKeys || []).forEach(function (k) {
+        var v = item[k];
+        if (v === undefined || v === null || v === '') return;
+        parts.push(k === 'precio' ? '$ ' + Number(v).toLocaleString('es-CO') : String(v));
+      });
+      return parts.join(' · ');
     }
 
     function renderItems(items) {
@@ -393,10 +406,7 @@
       items.forEach(function (item) {
         var div = document.createElement('div');
         div.className = 'predictive-item';
-        var label = item.nombre;
-        if (item.categoria) label += ' · ' + item.categoria;
-        if (item.precio != null) label += ' · $ ' + Number(item.precio).toLocaleString('es-CO');
-        div.textContent = label;
+        div.textContent = itemLabel(item);
         div.addEventListener('mousedown', function (e) {
           e.preventDefault();
           selectItem(item);
@@ -406,11 +416,11 @@
     }
 
     function selectItem(item) {
-      input.value = item.nombre;
+      input.value = String(item[field.display] != null ? item[field.display] : item.id);
       input._selectedProduct = item;
       list.innerHTML = '';
       list.classList.remove('show');
-      updateTotal();
+      if (isProductField) updateTotal();
     }
 
     function updateTotal() {
@@ -425,15 +435,16 @@
     input.addEventListener('input', function () {
       var q = normalizeText(input.value).trim();
       input._selectedProduct = null;
-      updateTotal();
+      if (isProductField) updateTotal();
       if (!q) {
         list.innerHTML = '';
         list.classList.remove('show');
         return;
       }
-      var items = getProducts().filter(function (p) {
-        return normalizeText(p.nombre).indexOf(q) !== -1 ||
-          normalizeText(p.categoria || '').indexOf(q) !== -1;
+      var items = getRecords().filter(function (p) {
+        return searchKeys.some(function (k) {
+          return normalizeText(p[k]).indexOf(q) !== -1;
+        });
       });
       if (items.length) {
         renderItems(items.slice(0, 8));
@@ -444,9 +455,11 @@
       }
     });
 
-    var cantidadEl = form.elements['cantidad'];
-    if (cantidadEl) {
-      cantidadEl.addEventListener('input', updateTotal);
+    if (isProductField) {
+      var cantidadEl = form.elements['cantidad'];
+      if (cantidadEl) {
+        cantidadEl.addEventListener('input', updateTotal);
+      }
     }
 
     document.addEventListener('click', function (e) {
@@ -770,10 +783,10 @@
       el.value = rec[f.key];
       if (f.predictive && rec[f.key]) {
         var match = getOptionsFrom(f.predictive).filter(function (p) {
-          return p.nombre === rec[f.key];
+          return String(p[f.display]) === String(rec[f.key]);
         })[0];
         el._selectedProduct = match || null;
-        if (match) {
+        if (match && f.key === 'producto') {
           var cantidadEl = form.elements['cantidad'];
           var totalEl = form.elements['total'];
           if (cantidadEl && totalEl) {
