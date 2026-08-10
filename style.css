@@ -88,6 +88,8 @@ body {
 .login-btn {
   background: linear-gradient(135deg, #0B749C, #1FBAC0);
   color: var(--white);
+  padding: 14px 28px;
+  font-size: 1.05rem;
 }
 
 .login-btn:hover {
@@ -160,123 +162,81 @@ body {
   background: #f3f4f6;
 }
 
-.menu-switch {
+.dropdown-menu .dropdown-dark-btn {
+  width: 100%;
+  border: none;
+  background: none;
+  text-align: left;
+  padding: 12px 16px;
+  font: inherit;
+  color: var(--text);
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  color: var(--text);
+  gap: 8px;
 }
 
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 22px;
+.dropdown-menu .dropdown-dark-btn:hover {
+  background: #f3f4f6;
 }
 
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
 }
 
-.switch-track {
-  position: absolute;
-  inset: 0;
-  background: #d1d5db;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: background 0.2s ease;
+body {
+  top: 0 !important;
 }
 
-.switch-track::before {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 18px;
-  height: 18px;
-  background: #fff;
-  border-radius: 50%;
-  transition: transform 0.2s ease;
-}
-
-.switch input:checked + .switch-track {
-  background: var(--accent);
-}
-
-.switch input:checked + .switch-track::before {
-  transform: translateX(18px);
-}
-
-body.dark {
-  color-scheme: dark;
-  background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
-  --text: #e6edf3;
-  --white: #161b22;
-}
-
-body.dark .topbar {
-  background: #161b22;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
-}
-
-body.dark .brand h1,
-body.dark .hero h2,
-body.dark .card h3 {
-  color: #9cd3e8;
-}
-
-body.dark .brand p,
-body.dark .hero p,
-body.dark .card p {
-  color: #c9d1d9;
-}
-
-body.dark .dropdown-menu {
-  background: #21262d;
-}
-
-body.dark .dropdown-menu a {
-  color: #e6edf3;
-}
-
-body.dark .dropdown-menu a:hover {
-  background: #30363d;
-}
-
-body.dark .hero,
-body.dark .card {
-  background: #21262d;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-}
-
-body.dark footer {
-  background: #0d1117;
-}
-
+/* ===== CARRUSEL ===== */
+/* La altura ya NO es fija: se calcula con aspect-ratio en función del
+   ancho disponible, así cualquier imagen (vertical, cuadrada, panorámica)
+   se adapta de forma responsiva sin deformarse ni cortarse mal. */
 .carousel {
   position: relative;
+  width: 100%;
   max-width: 1200px;
   margin: 24px auto 0;
   padding: 0 20px;
   overflow: hidden;
   border-radius: 18px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
 }
 
 .carousel-track {
   display: flex;
+  align-items: center;
+  width: 100%;
+  height: 420px;
+  background: transparent;
   transition: transform 0.5s ease;
 }
 
 .carousel-track img {
-  width: auto;
-  height: 400px;
+  width: 100%;
+  height: 100%;
   flex-shrink: 0;
-  object-fit: cover;
+  object-fit: contain;   /* muestra la imagen COMPLETA dentro del recuadro, sin recortarla */
+  object-position: center;
   display: block;
+}
+
+@media (max-width: 900px) {
+  .carousel-track {
+    height: 320px;
+  }
+}
+
+@media (max-width: 600px) {
+  .carousel {
+    padding: 0 12px;
+    border-radius: 12px;
+  }
+  .carousel-track {
+    height: 220px;
+  }
 }
 
 .carousel-dots {
@@ -478,10 +438,6 @@ footer {
 }
 
 @media (max-width: 800px) {
-  .carousel-track img {
-    height: 240px;
-  }
-
   .topbar {
     flex-direction: column;
     align-items: flex-start;
@@ -501,4 +457,57 @@ footer {
     grid-template-columns: 1fr;
     gap: 24px;
   }
+}
+
+/* ===== MODO NOCHE ===== */
+body.dark {
+  --bg: #0b1622;
+  --text: #e5e7eb;
+  background: linear-gradient(135deg, #0f1c2c 0%, #17282b 100%);
+  color: var(--text);
+}
+
+body.dark .topbar,
+body.dark .dropdown-menu,
+body.dark .hero,
+body.dark .card {
+  background: #14202e;
+}
+
+body.dark .topbar {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+body.dark .brand h1,
+body.dark .hero h2,
+body.dark .card h3 {
+  color: #7cc4de;
+}
+
+body.dark .brand p,
+body.dark .hero p,
+body.dark .card p {
+  color: #cbd5e1;
+}
+
+body.dark .dropdown-menu a,
+body.dark .dropdown-menu .dropdown-dark-btn {
+  color: var(--text);
+}
+
+body.dark .dropdown-menu a:hover,
+body.dark .dropdown-menu .dropdown-dark-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark .dropdown-menu {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+body.dark .carousel-dot {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+body.dark .carousel-dot.active {
+  background: #ffffff;
 }

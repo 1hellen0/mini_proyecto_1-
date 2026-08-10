@@ -5,113 +5,16 @@
     'Activo': 'ok',
     'Inactivo': 'off',
     'Pendiente': 'warn',
-    'En revisión': 'warn'
+    'En revisión': 'warn',
+    'En tránsito': 'warn',
+    'Entregado': 'ok',
+    'Cancelado': 'off'
   };
 
-  var MODULES = {
-    clientes: {
-      singular: 'cliente',
-      fields: [
-        { key: 'nombre', label: 'Nombre', type: 'text', required: true },
-        { key: 'email', label: 'Correo electrónico', type: 'email', required: true },
-        { key: 'telefono', label: 'Teléfono', type: 'tel' },
-        { key: 'estado', label: 'Estado', type: 'select', options: ['Activo', 'Inactivo', 'Pendiente'] },
-        { key: 'fechaRegistro', label: 'Fecha de registro', type: 'date' }
-      ],
-      resumen: function (data) {
-        return [
-          { icon: 'AC', p: 'Clientes registrados', value: data.length.toLocaleString('es-CO'), small: 'Total en el sistema' },
-          { icon: 'OK', p: 'Clientes activos', value: data.filter(function (r) { return r.estado === 'Activo'; }).length.toLocaleString('es-CO'), small: 'Gestión comercial actualizada' }
-        ];
-      }
-    },
-    productos: {
-      singular: 'producto',
-      fields: [
-        { key: 'nombre', label: 'Nombre', type: 'text', required: true },
-        { key: 'categoria', label: 'Categoría', type: 'text' },
-        { key: 'precio', label: 'Precio', type: 'number', min: 0, step: '0.01', format: function (v) { return '$ ' + Number(v).toLocaleString('es-CO'); } },
-        { key: 'stock', label: 'Stock', type: 'number', min: 0 },
-        { key: 'fechaRegistro', label: 'Fecha de registro', type: 'date' }
-      ],
-      resumen: function (data) {
-        return [
-          { icon: 'PR', p: 'Productos registrados', value: data.length.toLocaleString('es-CO'), small: 'Inventario centralizado' },
-          { icon: 'SC', p: 'Stock crítico', value: data.filter(function (r) { return Number(r.stock) < 10; }).length.toLocaleString('es-CO'), small: 'Prioridad de abastecimiento' }
-        ];
-      }
-    },
-    proveedores: {
-      singular: 'proveedor',
-      fields: [
-        { key: 'nombre', label: 'Nombre', type: 'text', required: true },
-        { key: 'contacto', label: 'Contacto', type: 'text' },
-        { key: 'telefono', label: 'Teléfono', type: 'tel' },
-        { key: 'estado', label: 'Estado', type: 'select', options: ['Activo', 'En revisión', 'Inactivo'] },
-        { key: 'fechaRegistro', label: 'Fecha de registro', type: 'date' }
-      ],
-      resumen: function (data) {
-        return [
-          { icon: 'PV', p: 'Proveedores registrados', value: data.length.toLocaleString('es-CO'), small: 'Red operacional estable' },
-          { icon: 'RV', p: 'En revisión', value: data.filter(function (r) { return r.estado === 'En revisión'; }).length.toLocaleString('es-CO'), small: 'Documentación por validar' }
-        ];
-      }
-    }
-  };
-
-  function pad2(n) {
-    return ('0' + n).slice(-2);
-  }
-
-  function todayIso() {
-    var d = new Date();
-    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
-  }
-
-  function daysAgoIso(n) {
-    var d = new Date();
-    d.setDate(d.getDate() - n);
-    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
-  }
-
-  var SEED = {
-    clientes: [
-      { id: 1, nombre: 'María López', email: 'maria.lopez@empresa.com', telefono: '300 123 4567', estado: 'Activo', fechaRegistro: daysAgoIso(0) },
-      { id: 2, nombre: 'Juan Pérez', email: 'juan.perez@correo.com', telefono: '311 234 5678', estado: 'Activo', fechaRegistro: daysAgoIso(1) },
-      { id: 3, nombre: 'Ana Torres', email: 'ana.torres@negocio.com', telefono: '320 345 6789', estado: 'Pendiente', fechaRegistro: daysAgoIso(1) },
-      { id: 4, nombre: 'Carlos Ramírez', email: 'carlos.ramirez@comercio.com', telefono: '301 456 7890', estado: 'Activo', fechaRegistro: daysAgoIso(2) },
-      { id: 5, nombre: 'Lucía Gómez', email: 'lucia.gomez@tienda.com', telefono: '315 567 8901', estado: 'Inactivo', fechaRegistro: daysAgoIso(3) },
-      { id: 6, nombre: 'Pedro Sánchez', email: 'pedro.sanchez@empresa.com', telefono: '312 678 9012', estado: 'Activo', fechaRegistro: daysAgoIso(4) },
-      { id: 7, nombre: 'Valentina Rojas', email: 'valentina.rojas@firma.com', telefono: '313 789 0123', estado: 'Pendiente', fechaRegistro: daysAgoIso(5) },
-      { id: 8, nombre: 'Andrés Díaz', email: 'andres.diaz@negocio.com', telefono: '317 890 1234', estado: 'Activo', fechaRegistro: daysAgoIso(6) },
-      { id: 9, nombre: 'Camila Castro', email: 'camila.castro@correo.com', telefono: '319 901 2345', estado: 'Activo', fechaRegistro: daysAgoIso(7) },
-      { id: 10, nombre: 'Felipe Mora', email: 'felipe.mora@tienda.com', telefono: '316 012 3456', estado: 'Pendiente', fechaRegistro: daysAgoIso(8) }
-    ],
-    productos: [
-      { id: 1, nombre: 'Laptop Pro 15"', categoria: 'Computación', precio: 2450000, stock: 12, fechaRegistro: daysAgoIso(0) },
-      { id: 2, nombre: 'Teclado mecánico RGB', categoria: 'Periféricos', precio: 145000, stock: 38, fechaRegistro: daysAgoIso(1) },
-      { id: 3, nombre: 'Monitor 27" 4K', categoria: 'Pantallas', precio: 980000, stock: 7, fechaRegistro: daysAgoIso(2) },
-      { id: 4, nombre: 'Mouse inalámbrico', categoria: 'Periféricos', precio: 62000, stock: 64, fechaRegistro: daysAgoIso(2) },
-      { id: 5, nombre: 'Impresora multifuncional', categoria: 'Impresión', precio: 420000, stock: 9, fechaRegistro: daysAgoIso(3) },
-      { id: 6, nombre: 'Audífonos Bluetooth', categoria: 'Audio', precio: 210000, stock: 25, fechaRegistro: daysAgoIso(4) },
-      { id: 7, nombre: 'Router WiFi 6', categoria: 'Redes', precio: 350000, stock: 14, fechaRegistro: daysAgoIso(5) },
-      { id: 8, nombre: 'Silla ergonómica', categoria: 'Mobiliario', precio: 680000, stock: 4, fechaRegistro: daysAgoIso(6) },
-      { id: 9, nombre: 'Tablet 10.5"', categoria: 'Tabletas', precio: 890000, stock: 11, fechaRegistro: daysAgoIso(7) },
-      { id: 10, nombre: 'Disco SSD 1TB', categoria: 'Almacenamiento', precio: 310000, stock: 30, fechaRegistro: daysAgoIso(8) }
-    ],
-    proveedores: [
-      { id: 1, nombre: 'TecnoImport', contacto: 'Laura Vélez', telefono: '305 111 2233', estado: 'Activo', fechaRegistro: daysAgoIso(0) },
-      { id: 2, nombre: 'Distribuidora Andina', contacto: 'Ricardo Paz', telefono: '310 222 3344', estado: 'En revisión', fechaRegistro: daysAgoIso(1) },
-      { id: 3, nombre: 'Suministros Global', contacto: 'Marta Ruiz', telefono: '322 333 4455', estado: 'Activo', fechaRegistro: daysAgoIso(2) },
-      { id: 4, nombre: 'RedPoint S.A.S.', contacto: 'Julián Cárdenas', telefono: '318 444 5566', estado: 'Activo', fechaRegistro: daysAgoIso(3) },
-      { id: 5, nombre: 'Comercial Norte', contacto: 'Silvia Peña', telefono: '301 555 6677', estado: 'En revisión', fechaRegistro: daysAgoIso(4) },
-      { id: 6, nombre: 'Almacenes Digitales', contacto: 'Óscar Luna', telefono: '312 666 7788', estado: 'Inactivo', fechaRegistro: daysAgoIso(5) },
-      { id: 7, nombre: 'Tech Supply', contacto: 'Karen Duarte', telefono: '320 777 8899', estado: 'Activo', fechaRegistro: daysAgoIso(6) },
-      { id: 8, nombre: 'Importadora Latina', contacto: 'Andrés Pineda', telefono: '313 888 9900', estado: 'Activo', fechaRegistro: daysAgoIso(7) },
-      { id: 9, nombre: 'Equipos y Suministros', contacto: 'Diana Franco', telefono: '311 999 0011', estado: 'En revisión', fechaRegistro: daysAgoIso(8) },
-      { id: 10, nombre: 'Mercado Tecnológico', contacto: 'Iván Salazar', telefono: '315 000 1122', estado: 'Activo', fechaRegistro: daysAgoIso(9) }
-    ]
-  };
+  var MODULES = window.QUANTUM.MODULES;
+  var SEED = window.QUANTUM.SEED;
+  var FIELD_DEFAULTS = window.QUANTUM.FIELD_DEFAULTS;
+  var todayIso = window.QUANTUM.todayIso;
 
   var page = document.body.dataset.module;
   if (!page || !MODULES[page]) return;
@@ -237,8 +140,17 @@
       localStorage.setItem(storageKey, JSON.stringify(data));
     } else {
       data = data.map(function (r) {
-        if (!r.fechaRegistro) return Object.assign({}, r, { fechaRegistro: todayIso() });
-        return r;
+        var copy = Object.assign({}, r);
+        if (!copy.fechaRegistro) copy.fechaRegistro = todayIso();
+        var defaults = FIELD_DEFAULTS[page];
+        if (defaults) {
+          Object.keys(defaults).forEach(function (key) {
+            if (copy[key] === undefined || copy[key] === null || copy[key] === '') {
+              copy[key] = defaults[key];
+            }
+          });
+        }
+        return copy;
       });
     }
     return data;
@@ -267,10 +179,7 @@
       var input;
       if (f.type === 'select') {
         input = document.createElement('select');
-        f.options.forEach(function (o) {
-          var op = document.createElement('option');
-          op.value = o;
-          op.textContent = o;
+        buildSelectOptions(f).forEach(function (op) {
           input.appendChild(op);
         });
       } else {
@@ -294,10 +203,149 @@
     form.appendChild(actions);
   }
 
+  function getOptionsFrom(moduleKey) {
+    var source = [];
+    try {
+      var raw = localStorage.getItem('quantum_' + moduleKey);
+      if (raw) source = JSON.parse(raw);
+    } catch (e) {
+      source = [];
+    }
+    if (!source.length && SEED[moduleKey]) source = SEED[moduleKey];
+    return source;
+  }
+
+  function buildSelectOptions(f) {
+    var options;
+    if (f.options) {
+      options = f.options;
+    } else if (f.optionsFrom) {
+      options = getOptionsFrom(f.optionsFrom).map(function (r) {
+        return String(r[f.display] != null ? r[f.display] : r.id);
+      });
+    } else {
+      options = [];
+    }
+    return options.map(function (o) {
+      var op = document.createElement('option');
+      op.value = o;
+      op.textContent = o;
+      return op;
+    });
+  }
+
+  function setupPredictive(input) {
+    if (!input) return;
+    var field = config.fields.filter(function (f) { return f.key === input.name; })[0];
+    if (!field || !field.predictive) return;
+
+    var wrapper = document.createElement('div');
+    wrapper.className = 'predictive';
+    input.parentNode.insertBefore(wrapper, input);
+    wrapper.appendChild(input);
+
+    var list = document.createElement('div');
+    list.className = 'predictive-list';
+    wrapper.appendChild(list);
+
+    var isProductField = field.key === 'producto';
+    var searchKeys = field.search || [field.display];
+
+    function getRecords() {
+      return getOptionsFrom(field.predictive);
+    }
+
+    function itemLabel(item) {
+      var parts = [String(item[field.display] != null ? item[field.display] : item.id)];
+      (field.labelKeys || []).forEach(function (k) {
+        var v = item[k];
+        if (v === undefined || v === null || v === '') return;
+        parts.push(k === 'precio' ? '$ ' + Number(v).toLocaleString('es-CO') : String(v));
+      });
+      return parts.join(' · ');
+    }
+
+    function renderItems(items) {
+      list.innerHTML = '';
+      items.forEach(function (item) {
+        var div = document.createElement('div');
+        div.className = 'predictive-item';
+        div.textContent = itemLabel(item);
+        div.addEventListener('mousedown', function (e) {
+          e.preventDefault();
+          selectItem(item);
+        });
+        list.appendChild(div);
+      });
+    }
+
+    function selectItem(item) {
+      input.value = String(item[field.display] != null ? item[field.display] : item.id);
+      input._selectedProduct = item;
+      list.innerHTML = '';
+      list.classList.remove('show');
+      if (isProductField) updateTotal();
+    }
+
+    function updateTotal() {
+      if (!input._selectedProduct) return;
+      var cantidadEl = form.elements['cantidad'];
+      var totalEl = form.elements['total'];
+      if (!cantidadEl || !totalEl) return;
+      var cant = parseFloat(cantidadEl.value) || 0;
+      totalEl.value = Math.round((Number(input._selectedProduct.precio) || 0) * cant);
+    }
+
+    input.addEventListener('input', function () {
+      var q = normalizeText(input.value).trim();
+      input._selectedProduct = null;
+      if (isProductField) updateTotal();
+      if (!q) {
+        list.innerHTML = '';
+        list.classList.remove('show');
+        return;
+      }
+      var items = getRecords().filter(function (p) {
+        return searchKeys.some(function (k) {
+          return normalizeText(p[k]).indexOf(q) !== -1;
+        });
+      });
+      if (items.length) {
+        renderItems(items.slice(0, 8));
+        list.classList.add('show');
+      } else {
+        list.innerHTML = '';
+        list.classList.remove('show');
+      }
+    });
+
+    if (isProductField) {
+      var cantidadEl = form.elements['cantidad'];
+      if (cantidadEl) {
+        cantidadEl.addEventListener('input', updateTotal);
+      }
+    }
+
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest || !e.target.closest('.predictive')) {
+        list.classList.remove('show');
+      }
+    });
+  }
+
+  function setupPredictiveFields() {
+    config.fields.forEach(function (f) {
+      if (f.predictive && form.elements[f.key]) {
+        setupPredictive(form.elements[f.key]);
+      }
+    });
+  }
+
   function resetForm() {
     form.reset();
     config.fields.forEach(function (f) {
       if (f.type === 'date') form.elements[f.key].value = todayIso();
+      if (f.predictive && form.elements[f.key]) form.elements[f.key]._selectedProduct = null;
     });
     editingId = null;
     formTitle.textContent = 'Nuevo ' + config.singular;
@@ -595,7 +643,21 @@
     if (!rec) return;
     editingId = Number(id);
     config.fields.forEach(function (f) {
-      form.elements[f.key].value = rec[f.key];
+      var el = form.elements[f.key];
+      el.value = rec[f.key];
+      if (f.predictive && rec[f.key]) {
+        var match = getOptionsFrom(f.predictive).filter(function (p) {
+          return String(p[f.display]) === String(rec[f.key]);
+        })[0];
+        el._selectedProduct = match || null;
+        if (match && f.key === 'producto') {
+          var cantidadEl = form.elements['cantidad'];
+          var totalEl = form.elements['total'];
+          if (cantidadEl && totalEl) {
+            totalEl.value = Math.round((Number(match.precio) || 0) * (parseFloat(cantidadEl.value) || 0));
+          }
+        }
+      }
     });
     formTitle.textContent = 'Editar ' + config.singular;
     btnCancel.classList.remove('is-hidden');
@@ -660,6 +722,7 @@
   }
 
   buildForm();
+  setupPredictiveFields();
   btnCancel = document.getElementById('btnCancel');
   btnCancel.addEventListener('click', resetForm);
   resetForm();

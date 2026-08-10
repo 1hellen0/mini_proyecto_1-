@@ -28,8 +28,7 @@ if (menuBtn && dropdownMenu) {
 }
 
 const track = document.querySelector('.carousel-track');
-const dotsContainer = document.querySelector('.carousel-dots');
-let currentSlide = 0;
+const dotsContainer = document.querySelector('.carousel-dots');let currentSlide = 0;
 let autoPlayInterval;
 
 function goToSlide(index) {
@@ -64,4 +63,21 @@ if (track && dotsContainer) {
   });
   updateDots();
   restartAutoPlay();
+}
+
+const darkModeBtn = document.getElementById('darkModeBtn');
+
+function applyDarkMode(enabled) {
+  document.body.classList.toggle('dark', enabled);
+  if (darkModeBtn) {
+    darkModeBtn.setAttribute('aria-pressed', String(enabled));
+  }
+  localStorage.setItem('darkMode', enabled ? '1' : '0');
+}
+
+if (darkModeBtn) {
+  applyDarkMode(localStorage.getItem('darkMode') === '1');
+  darkModeBtn.addEventListener('click', () => {
+    applyDarkMode(!document.body.classList.contains('dark'));
+  });
 }

@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quantum + | Clientes</title>
+  <title>Quantum + | Pedidos</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
-<body data-module="clientes">
+<body data-module="pedidos">
   <div class="app-shell">
     <aside class="sidebar">
       <div class="brand-area">
@@ -46,15 +46,15 @@
       <main class="dashboard">
         <section class="work-area module-view">
           <p class="eyebrow">Módulo administrativo</p>
-          <h1>Administración de clientes</h1>
-          <div class="module-grid" id="summaryGrid" aria-label="Resumen de clientes"></div>
+          <h1>Administración de pedidos</h1>
+          <div class="module-grid" id="summaryGrid" aria-label="Resumen de pedidos"></div>
         </section>
 
         <section class="work-area">
           <div class="work-header">
             <div>
               <p class="eyebrow">Registro</p>
-              <h2 id="formTitle">Nuevo cliente</h2>
+              <h2 id="formTitle">Nuevo pedido</h2>
             </div>
             <button type="button" id="uploadBtn" class="btn-upload">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -73,7 +73,7 @@
           <div class="work-header">
             <div>
               <p class="eyebrow">Listado</p>
-              <h2>Clientes registrados</h2>
+              <h2>Pedidos registrados</h2>
             </div>
             <div class="filters">
               <label class="filter-field">

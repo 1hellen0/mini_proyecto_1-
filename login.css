@@ -333,6 +333,66 @@ html, body{
 }
 .signup-line a:hover{ text-decoration: underline; }
 
+/* ---------- Modo noche ---------- */
+body.dark {
+  --ink: #E8ECF4;
+  --text: #D7DCE6;
+  --text-dim: #9AA3B5;
+  --border: #2A3247;
+  --panel-bg: #0E1526;
+  background: #0A1120;
+}
+
+body.dark .panel-brand {
+  background: var(--panel-bg);
+}
+
+body.dark .dot-grid {
+  background-image: radial-gradient(#22304A 1.4px, transparent 1.4px);
+}
+
+body.dark .logo-box {
+  background: #161E30;
+  box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.5);
+}
+
+body.dark .panel-form {
+  background:
+    radial-gradient(circle at 12% 20%, rgba(156, 238, 141, 0.06), transparent 28%),
+    radial-gradient(circle at 85% 10%, rgba(31, 186, 192, 0.10), transparent 30%),
+    linear-gradient(135deg, #0B1120 0%, #0E1526 55%, #0A1A24 100%);
+}
+
+body.dark .login-card {
+  background: rgba(22, 30, 48, 0.86);
+  border-color: var(--border);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+body.dark .input-shell input {
+  background: rgba(18, 26, 42, 0.9);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+body.dark .input-shell input::placeholder { color: #5A6274; }
+
+body.dark .toggle-visibility { color: var(--text-dim); }
+
+body.dark .google-btn {
+  background: #161E30;
+  border-color: var(--border);
+  color: var(--text);
+}
+
+body.dark .google-btn:hover {
+  background: #1B2438;
+  border-color: #3A455C;
+}
+
+body.dark .divider::before,
+body.dark .divider::after { background: var(--border); }
+
 @media (max-width: 880px){
   .screen{ grid-template-columns: 1fr; }
   .panel-brand{ padding: 40px 20px; min-height: 320px; }

@@ -1,5 +1,9 @@
 (function(){
 
+  if (localStorage.getItem('darkMode') === '1') {
+    document.body.classList.add('dark');
+  }
+
   const form = document.getElementById('login-form');
   const emailInput = document.getElementById('email');
   const passwordInput = document.getElementById('password');
@@ -147,7 +151,6 @@
 
     showError('');
     errorMsg.hidden = true;
-    alert('Bienvenido de nuevo, ' + user.name + '!');
     window.location.href = 'admin.html';
   });
 
