@@ -160,123 +160,54 @@ body {
   background: #f3f4f6;
 }
 
-.menu-switch {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  color: var(--text);
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 40px;
-  height: 22px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.switch-track {
-  position: absolute;
-  inset: 0;
-  background: #d1d5db;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.switch-track::before {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 18px;
-  height: 18px;
-  background: #fff;
-  border-radius: 50%;
-  transition: transform 0.2s ease;
-}
-
-.switch input:checked + .switch-track {
-  background: var(--accent);
-}
-
-.switch input:checked + .switch-track::before {
-  transform: translateX(18px);
-}
-
-body.dark {
-  color-scheme: dark;
-  background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
-  --text: #e6edf3;
-  --white: #161b22;
-}
-
-body.dark .topbar {
-  background: #161b22;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
-}
-
-body.dark .brand h1,
-body.dark .hero h2,
-body.dark .card h3 {
-  color: #9cd3e8;
-}
-
-body.dark .brand p,
-body.dark .hero p,
-body.dark .card p {
-  color: #c9d1d9;
-}
-
-body.dark .dropdown-menu {
-  background: #21262d;
-}
-
-body.dark .dropdown-menu a {
-  color: #e6edf3;
-}
-
-body.dark .dropdown-menu a:hover {
-  background: #30363d;
-}
-
-body.dark .hero,
-body.dark .card {
-  background: #21262d;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-}
-
-body.dark footer {
-  background: #0d1117;
-}
-
+/* ===== CARRUSEL ===== */
+/* La altura ya NO es fija: se calcula con aspect-ratio en función del
+   ancho disponible, así cualquier imagen (vertical, cuadrada, panorámica)
+   se adapta de forma responsiva sin deformarse ni cortarse mal. */
 .carousel {
   position: relative;
+  width: 100%;
   max-width: 1200px;
   margin: 24px auto 0;
   padding: 0 20px;
   overflow: hidden;
   border-radius: 18px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-sizing: border-box;
 }
 
 .carousel-track {
   display: flex;
+  align-items: center;
+  width: 100%;
+  height: 420px;
+  background: transparent;
   transition: transform 0.5s ease;
 }
 
 .carousel-track img {
-  width: auto;
-  height: 400px;
+  width: 100%;
+  height: 100%;
   flex-shrink: 0;
-  object-fit: cover;
+  object-fit: contain;   /* muestra la imagen COMPLETA dentro del recuadro, sin recortarla */
+  object-position: center;
   display: block;
+}
+
+@media (max-width: 900px) {
+  .carousel-track {
+    height: 320px;
+  }
+}
+
+@media (max-width: 600px) {
+  .carousel {
+    padding: 0 12px;
+    border-radius: 12px;
+  }
+  .carousel-track {
+    height: 220px;
+  }
 }
 
 .carousel-dots {
@@ -478,10 +409,6 @@ footer {
 }
 
 @media (max-width: 800px) {
-  .carousel-track img {
-    height: 240px;
-  }
-
   .topbar {
     flex-direction: column;
     align-items: flex-start;

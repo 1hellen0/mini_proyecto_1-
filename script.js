@@ -28,8 +28,7 @@ if (menuBtn && dropdownMenu) {
 }
 
 const track = document.querySelector('.carousel-track');
-const dotsContainer = document.querySelector('.carousel-dots');
-let currentSlide = 0;
+const dotsContainer = document.querySelector('.carousel-dots');let currentSlide = 0;
 let autoPlayInterval;
 
 function goToSlide(index) {
