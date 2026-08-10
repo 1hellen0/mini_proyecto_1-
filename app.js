@@ -66,7 +66,7 @@
       fields: [
         { key: 'cliente', label: 'Cliente', type: 'select', optionsFrom: 'clientes', display: 'nombre' },
         { key: 'proveedor', label: 'Proveedor', type: 'select', optionsFrom: 'proveedores', display: 'nombre' },
-        { key: 'producto', label: 'Producto', type: 'text', required: true },
+        { key: 'producto', label: 'Producto', type: 'text', required: true, predictive: 'productos' },
         { key: 'cantidad', label: 'Cantidad', type: 'number', min: 0 },
         { key: 'total', label: 'Valor total', type: 'number', min: 0, step: '0.01', format: function (v) { return '$ ' + Number(v).toLocaleString('es-CO'); } },
         { key: 'estado', label: 'Estado', type: 'select', options: ['Pendiente', 'En tránsito', 'Entregado', 'Cancelado'] },
@@ -370,10 +370,105 @@
     });
   }
 
+  function setupPredictive(input) {
+    if (!input) return;
+    var field = config.fields.filter(function (f) { return f.key === input.name; })[0];
+    if (!field || !field.predictive) return;
+
+    var wrapper = document.createElement('div');
+    wrapper.className = 'predictive';
+    input.parentNode.insertBefore(wrapper, input);
+    wrapper.appendChild(input);
+
+    var list = document.createElement('div');
+    list.className = 'predictive-list';
+    wrapper.appendChild(list);
+
+    function getProducts() {
+      return getOptionsFrom(field.predictive);
+    }
+
+    function renderItems(items) {
+      list.innerHTML = '';
+      items.forEach(function (item) {
+        var div = document.createElement('div');
+        div.className = 'predictive-item';
+        var label = item.nombre;
+        if (item.categoria) label += ' · ' + item.categoria;
+        if (item.precio != null) label += ' · $ ' + Number(item.precio).toLocaleString('es-CO');
+        div.textContent = label;
+        div.addEventListener('mousedown', function (e) {
+          e.preventDefault();
+          selectItem(item);
+        });
+        list.appendChild(div);
+      });
+    }
+
+    function selectItem(item) {
+      input.value = item.nombre;
+      input._selectedProduct = item;
+      list.innerHTML = '';
+      list.classList.remove('show');
+      updateTotal();
+    }
+
+    function updateTotal() {
+      if (!input._selectedProduct) return;
+      var cantidadEl = form.elements['cantidad'];
+      var totalEl = form.elements['total'];
+      if (!cantidadEl || !totalEl) return;
+      var cant = parseFloat(cantidadEl.value) || 0;
+      totalEl.value = Math.round((Number(input._selectedProduct.precio) || 0) * cant);
+    }
+
+    input.addEventListener('input', function () {
+      var q = normalizeText(input.value).trim();
+      input._selectedProduct = null;
+      updateTotal();
+      if (!q) {
+        list.innerHTML = '';
+        list.classList.remove('show');
+        return;
+      }
+      var items = getProducts().filter(function (p) {
+        return normalizeText(p.nombre).indexOf(q) !== -1 ||
+          normalizeText(p.categoria || '').indexOf(q) !== -1;
+      });
+      if (items.length) {
+        renderItems(items.slice(0, 8));
+        list.classList.add('show');
+      } else {
+        list.innerHTML = '';
+        list.classList.remove('show');
+      }
+    });
+
+    var cantidadEl = form.elements['cantidad'];
+    if (cantidadEl) {
+      cantidadEl.addEventListener('input', updateTotal);
+    }
+
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest || !e.target.closest('.predictive')) {
+        list.classList.remove('show');
+      }
+    });
+  }
+
+  function setupPredictiveFields() {
+    config.fields.forEach(function (f) {
+      if (f.predictive && form.elements[f.key]) {
+        setupPredictive(form.elements[f.key]);
+      }
+    });
+  }
+
   function resetForm() {
     form.reset();
     config.fields.forEach(function (f) {
       if (f.type === 'date') form.elements[f.key].value = todayIso();
+      if (f.predictive && form.elements[f.key]) form.elements[f.key]._selectedProduct = null;
     });
     editingId = null;
     formTitle.textContent = 'Nuevo ' + config.singular;
@@ -671,7 +766,21 @@
     if (!rec) return;
     editingId = Number(id);
     config.fields.forEach(function (f) {
-      form.elements[f.key].value = rec[f.key];
+      var el = form.elements[f.key];
+      el.value = rec[f.key];
+      if (f.predictive && rec[f.key]) {
+        var match = getOptionsFrom(f.predictive).filter(function (p) {
+          return p.nombre === rec[f.key];
+        })[0];
+        el._selectedProduct = match || null;
+        if (match) {
+          var cantidadEl = form.elements['cantidad'];
+          var totalEl = form.elements['total'];
+          if (cantidadEl && totalEl) {
+            totalEl.value = Math.round((Number(match.precio) || 0) * (parseFloat(cantidadEl.value) || 0));
+          }
+        }
+      }
     });
     formTitle.textContent = 'Editar ' + config.singular;
     btnCancel.classList.remove('is-hidden');
@@ -736,6 +845,7 @@
   }
 
   buildForm();
+  setupPredictiveFields();
   btnCancel = document.getElementById('btnCancel');
   btnCancel.addEventListener('click', resetForm);
   resetForm();

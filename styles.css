@@ -597,6 +597,40 @@ body {
   white-space: nowrap;
 }
 
+.predictive {
+  position: relative;
+}
+
+.predictive-list {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(11, 116, 156, 0.18);
+}
+
+.predictive-list.show {
+  display: block;
+}
+
+.predictive-item {
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.predictive-item:hover {
+  background: rgba(31, 186, 192, 0.12);
+  color: var(--blue-deep);
+}
+
 .filter-field input {
   padding: 10px 12px;
   border: 1px solid rgba(11, 116, 156, 0.25);
