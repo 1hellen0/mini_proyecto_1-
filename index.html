@@ -38,7 +38,18 @@
             <button type="button" class="dropdown-dark-btn" id="darkModeBtn" aria-pressed="false">
               Modo noche
             </button>
-            <a href="#traductor">Traductor <span aria-hidden="true">🌐</span></a>
+            <div class="translator-wrapper">
+              <button type="button" class="dropdown-dark-btn" id="translatorBtn" aria-expanded="false">
+                Traductor <span aria-hidden="true">🌐</span>
+              </button>
+              <div class="language-menu" id="languageMenu">
+                <button type="button" data-lang="es">Español</button>
+                <button type="button" data-lang="en">English</button>
+                <button type="button" data-lang="fr">Français</button>
+                <button type="button" data-lang="de">Deutsch</button>
+                <button type="button" data-lang="pt">Português</button>
+              </div>
+            </div>
           </nav>
         </div>
       </div>
@@ -156,6 +167,9 @@
       <p class="footer-bottom">Quantum + © 2026 · Tecnología para construir el futuro</p>
     </footer>
 
+    <div id="google_translate_element" style="display: none;"></div>
+
     <script src="script.js"></script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   </body>
 </html>
