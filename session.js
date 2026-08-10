@@ -5,6 +5,17 @@
     document.body.classList.add('dark');
   }
 
+  var darkModeBtn = document.getElementById('darkModeBtn');
+  if (darkModeBtn) {
+    darkModeBtn.setAttribute('aria-pressed', String(document.body.classList.contains('dark')));
+    darkModeBtn.addEventListener('click', function () {
+      var enabled = !document.body.classList.contains('dark');
+      document.body.classList.toggle('dark', enabled);
+      localStorage.setItem('darkMode', enabled ? '1' : '0');
+      darkModeBtn.setAttribute('aria-pressed', String(enabled));
+    });
+  }
+
   function getSession() {
     try {
       var raw = localStorage.getItem('quantum_session');

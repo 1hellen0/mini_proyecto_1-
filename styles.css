@@ -199,6 +199,26 @@ body {
   color: #fff;
 }
 
+.user-menu .user-menu-dark-btn {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  text-align: center;
+  color: var(--blue-deep);
+  background: rgba(31, 186, 192, 0.15);
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.9rem;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+}
+
+.user-menu .user-menu-dark-btn:hover {
+  background: linear-gradient(135deg, var(--blue-deep), var(--cyan));
+  color: #fff;
+}
+
 .dashboard {
   display: grid;
   gap: 22px;
@@ -880,6 +900,11 @@ body.dark .user-avatar {
 body.dark .user-menu {
   background: #161E30;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+body.dark .user-menu .user-menu-dark-btn {
+  color: #7CC4DE;
+  border-bottom-color: #2A3247;
 }
 
 body.dark .summary-card,
