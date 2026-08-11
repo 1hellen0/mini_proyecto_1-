@@ -34,6 +34,7 @@
   var currentPage = 1;
   var dateFilter = document.getElementById('dateFilter');
   var searchFilter = document.getElementById('searchFilter');
+  var stableRowHeight = null;
 
   function normalizeText(value) {
     return String(value == null ? '' : value).toLowerCase()
@@ -408,6 +409,7 @@
           : 'No hay registros. Crea el primero con el formulario.');
       empty.appendChild(emptyTd);
       tableBody.appendChild(empty);
+      keepTableHeight(false);
       renderPagination();
       return;
     }
@@ -467,7 +469,24 @@
       tableBody.appendChild(tr);
     });
 
+    keepTableHeight(true);
     renderPagination();
+  }
+
+  function keepTableHeight(hasDataRows) {
+    var wrap = document.querySelector('.table-card .table-wrap');
+    if (!wrap || !tableHead || !tableBody) return;
+    if (hasDataRows) {
+      var firstRow = tableBody.querySelector('tr');
+      if (firstRow) {
+        var rowHeight = firstRow.offsetHeight;
+        if (rowHeight > 0) stableRowHeight = rowHeight;
+      }
+    }
+    if (!stableRowHeight) return;
+    var headerHeight = tableHead.offsetHeight || 0;
+    var target = headerHeight + stableRowHeight * PAGE_SIZE;
+    wrap.style.height = target + 'px';
   }
 
   function renderPagination() {
