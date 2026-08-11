@@ -504,20 +504,26 @@
     });
     controls.appendChild(prev);
 
-    for (var i = 1; i <= totalPages; i++) {
-      (function (pageNum) {
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'pagination-btn' + (pageNum === currentPage ? ' is-active' : '');
-        btn.textContent = pageNum;
-        if (pageNum === currentPage) btn.setAttribute('aria-current', 'page');
-        btn.addEventListener('click', function () {
-          currentPage = pageNum;
-          renderTable();
-        });
-        controls.appendChild(btn);
-      })(i);
-    }
+    var items = getPaginationItems(totalPages, currentPage);
+    items.forEach(function (item) {
+      if (item === 'ellipsis') {
+        var ellipsis = document.createElement('span');
+        ellipsis.className = 'pagination-ellipsis';
+        ellipsis.textContent = '…';
+        controls.appendChild(ellipsis);
+        return;
+      }
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'pagination-btn' + (item === currentPage ? ' is-active' : '');
+      btn.textContent = item;
+      if (item === currentPage) btn.setAttribute('aria-current', 'page');
+      btn.addEventListener('click', function () {
+        currentPage = item;
+        renderTable();
+      });
+      controls.appendChild(btn);
+    });
 
     var next = document.createElement('button');
     next.type = 'button';
@@ -533,6 +539,21 @@
     controls.appendChild(next);
 
     pagination.appendChild(controls);
+  }
+
+  function getPaginationItems(totalPages, currentPage) {
+    var items = [];
+    var range = 1;
+    if (totalPages <= 5) {
+      for (var i = 1; i <= totalPages; i++) items.push(i);
+      return items;
+    }
+    items.push(1);
+    if (currentPage - range > 2) items.push('ellipsis');
+    for (var i = Math.max(2, currentPage - range); i <= Math.min(totalPages - 1, currentPage + range); i++) items.push(i);
+    if (currentPage + range < totalPages - 1) items.push('ellipsis');
+    items.push(totalPages);
+    return items;
   }
 
   function renderAll() {

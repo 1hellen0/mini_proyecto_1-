@@ -724,6 +724,15 @@ body {
   cursor: not-allowed;
 }
 
+.pagination-ellipsis {
+  min-width: 24px;
+  text-align: center;
+  color: var(--blue-deep);
+  font-weight: 700;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
 .data-table {
   width: 100%;
   border-collapse: collapse;
@@ -996,6 +1005,7 @@ body.dark .data-table th {
 body.dark .btn-ghost,
 body.dark .btn-upload,
 body.dark .pagination-btn,
+body.dark .pagination-ellipsis,
 body.dark .btn-edit {
   color: #7CC4DE;
 }
